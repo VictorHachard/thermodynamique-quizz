@@ -81,6 +81,23 @@
   .qa .q{font-weight:600;margin-bottom:7px}
   .qa .a{color:#9fe0ae;border-left:2px solid var(--ok);padding-left:11px}
   #sheet.noans .qa .a{display:none}
+  #sheet.noans .qa .dia{display:none}
+  /* schémas */
+  .dia{margin-top:12px;background:#0b0e13;border:1px solid var(--line);
+       border-radius:9px;padding:10px;overflow-x:auto}
+  .dia svg{display:block;width:100%;max-width:440px;height:auto;margin:0 auto}
+  .dia .ax{stroke:var(--dim);stroke-width:1.6;fill:none}
+  .dia .gd{stroke:var(--line);stroke-width:1;stroke-dasharray:3 4;fill:none}
+  .dia .cv{stroke:var(--acc);stroke-width:2.2;fill:none}
+  .dia .ln{stroke:var(--dim);stroke-width:1.6;fill:none}
+  .dia .ar{fill:var(--acc)}
+  .dia .arl{fill:var(--dim)}
+  .dia .bx{fill:var(--panel2);stroke:var(--acc);stroke-width:1.6}
+  .dia .pt{fill:var(--acc)}
+  .dia text{font-family:inherit}
+  .dia .lb{fill:var(--dim);font-size:10px}
+  .dia .nm{fill:var(--txt);font-size:11.5px;font-weight:600}
+  .dia .st{fill:var(--acc);font-size:12.5px;font-weight:700}
   .hidden{display:none}
 </style>
 </head>
@@ -169,7 +186,9 @@ let deck = [], idx = 0, score = 0, fails = [], mode = "qcm", answered = false, c
 /* 8 propositions : la bonne + 7 leurres.
    On privilégie la même catégorie, puis une longueur voisine de la bonne réponse
    (sinon la plus longue proposition trahirait la solution), et on garde de
-   l'aléatoire en tirant 7 leurres parmi les 14 meilleurs candidats. */
+   l'aléatoire ensuite. Les 3 candidats les plus proches sont toujours présents
+   (PMB face à PMH, l'autre sens de la boucle frigo, le cycle essence face au
+   diesel…) : sans eux la question ne teste plus rien. */
 function buildOptions(q) {
   const same = [], other = [];
   const seen = { [q.a]: 1 };
@@ -182,7 +201,8 @@ function buildOptions(q) {
   const near = arr => shuffle(arr)
     .sort((x, y) => Math.abs(x.length - q.a.length) - Math.abs(y.length - q.a.length));
   const pool = near(same).concat(near(other));
-  return shuffle([q.a].concat(shuffle(pool.slice(0, 14)).slice(0, 7)));
+  const keep = pool.slice(0, 3).concat(shuffle(pool.slice(3, 16)).slice(0, 4));
+  return shuffle([q.a].concat(keep));
 }
 
 /* --- Fiche de révision : tout sur une page, dans l'ordre du cours --- */
@@ -213,6 +233,7 @@ function showSheet() {
       d.children[0].textContent = (QUESTIONS.indexOf(q) + 1) + ".";
       d.children[1].children[0].textContent = q.q;
       d.children[1].children[1].textContent = q.a;
+      const dg = diagram(q); if (dg) d.children[1].appendChild(dg);
       box.appendChild(d);
     });
   });
@@ -245,6 +266,7 @@ function render() {
   $("opts").innerHTML = ""; $("opts").classList.add("hidden");
   $("freebox").classList.add("hidden");
   $("revealBox").classList.add("hidden");
+  const old = $("revealBox").querySelector(".dia"); if (old) old.remove();
 
   if (mode === "qcm") {
     $("opts").classList.remove("hidden");
@@ -264,6 +286,15 @@ function render() {
     addBtn("Voir la réponse", reveal, true);
     $("actions").insertAdjacentHTML("beforeend", '<span class="hint">Ctrl+Entrée pour révéler.</span>');
   }
+}
+
+/* Schéma à savoir refaire (questions 29, 30, 34), affiché avec la correction. */
+function diagram(q) {
+  if (!q.d || !DIAGRAMS[q.d]) return null;
+  const d = document.createElement("div");
+  d.className = "dia";
+  d.innerHTML = DIAGRAMS[q.d];
+  return d;
 }
 
 function addBtn(label, fn, primary) {
@@ -286,6 +317,7 @@ function pick(btn, txt) {
   liveScore();
   $("fb").className = "fb";
   $("fb").innerHTML = good ? '<b class="ok">Correct</b>' : '<b class="ko">Raté</b>';
+  const dq = diagram(cur); if (dq) $("fb").appendChild(dq);
   $("actions").innerHTML = "";
   addBtn(idx + 1 < deck.length ? "Question suivante" : "Voir le résultat", next, true);
 }
@@ -296,6 +328,7 @@ function reveal() {
   answered = true;
   $("revealTxt").textContent = cur.a;
   $("revealBox").classList.remove("hidden");
+  const dr = diagram(cur); if (dr) $("revealBox").appendChild(dr);
   $("free").disabled = true;
   $("actions").innerHTML = '<span class="hint">Tu l\'avais ?</span>';
   addBtn("Je l'avais", () => { score++; next(); }, true);
@@ -333,6 +366,7 @@ function finish() {
     d.children[0].textContent = f.q.q;
     d.children[1].textContent = "Ta réponse : " + f.given;
     d.children[2].textContent = "Réponse : " + f.q.a;
+    const dg = diagram(f.q); if (dg) d.appendChild(dg);
     box.appendChild(d);
   });
   window.scrollTo(0, 0);
