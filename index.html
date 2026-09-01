@@ -106,6 +106,28 @@
   .dia .c1,.dia .c2,.dia .c3,.dia .c4{fill:none;stroke-width:2.2}
   .dia .c1{stroke:#e5534b} .dia .c2{stroke:#39afd1}
   .dia .c3{stroke:#3fb950} .dia .c4{stroke:#a371f7}
+  /* notations des scripts */
+  .nota{margin-top:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  .nota>summary{padding:14px 16px;cursor:pointer;font-weight:600;color:var(--acc);list-style:none}
+  .nota>summary::-webkit-details-marker{display:none}
+  .nota>summary::after{content:" \25be";color:var(--dim)}
+  .nota[open]>summary::after{content:" \25b4"}
+  .nota>summary small{display:block;color:var(--dim);font-weight:400;font-size:13px;margin-top:2px}
+  .nota .in{padding:0 16px 18px}
+  .nota .in>p{color:var(--dim);font-size:13.5px;margin:0 0 4px}
+  .nota h3{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);
+           margin:22px 0 6px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .nota table{width:100%;border-collapse:collapse;font-size:14px;table-layout:fixed}
+  .nota td{padding:7px 12px 7px 0;border-bottom:1px solid var(--line);
+           vertical-align:top;color:var(--dim);overflow-wrap:break-word}
+  .nota tr:last-child td{border-bottom:none}
+  .nota td:first-child{width:38%;padding-right:14px;color:var(--txt)}
+  .nota code{background:var(--panel2);border:1px solid var(--line);border-radius:5px;
+             padding:1px 6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;
+             color:var(--txt)}
+  .nota b{color:var(--txt)}
+  .nota .warn{margin-top:16px;padding:12px 14px;border-radius:9px;font-size:13.5px;
+              background:rgba(229,83,75,.12);border:1px solid var(--ko);color:var(--txt)}
   .hidden{display:none}
 </style>
 </head>
@@ -134,6 +156,78 @@
       <span><b>Exos &amp; scripts Casio →</b>
       <small>Les 9 exercices types de l'examen : quoi trouver, quel script, quoi taper, quoi lire.</small></span>
     </a>
+    <details class="nota">
+      <summary>Comment lire les scripts Casio
+        <small>Les abréviations, les opérateurs et les unités des 6 scripts.</small></summary>
+      <div class="in">
+        <p>L'écran fait 21 caractères de large, donc tout est abrégé. Les lignes
+          <b>décalées de deux espaces</b> sont des <b>formules</b> à recopier sur ta copie,
+          les lignes collées à gauche sont les <b>résultats</b>.</p>
+
+        <h3>Façon d'écrire</h3>
+        <table>
+          <tr><td><code>.</code></td><td>multiplication. <code>g.Cv</code> = γ × C<sub>v</sub>, <code>n.Cv.(TC-TB)</code> = n × C<sub>v</sub> × (T<sub>C</sub> − T<sub>B</sub>)</td></tr>
+          <tr><td><code>x</code></td><td>multiplication aussi, quand un point serait illisible : <code>kg/s x 3.6</code></td></tr>
+          <tr><td><code>^</code></td><td>puissance. <code>eps^(1-g)</code> = ε<sup>(1−γ)</sup></td></tr>
+          <tr><td><code>1e3</code> <code>1e5</code></td><td>1000 et 100 000. <code>mcarb.PCI.1e3</code> sert à convertir des kJ en J</td></tr>
+          <tr><td><code>|Wtot|</code></td><td>valeur absolue (on ignore le signe)</td></tr>
+          <tr><td><code>-&gt;</code></td><td>« donne », « devient »</td></tr>
+          <tr><td><code>cste</code></td><td>constante</td></tr>
+          <tr><td><code>(&lt;0)</code> <code>(&gt;0)</code></td><td>le signe attendu du résultat — si tu trouves l'inverse, il y a une erreur</td></tr>
+          <tr><td><code>verif</code></td><td>ligne de contrôle, pas une réponse : elle doit tomber sur 0, ou redonner un résultat déjà affiché</td></tr>
+          <tr><td><code>(vide = passer)</code></td><td>tu peux appuyer sur EXE sans rien taper. Les autres questions sont reposées tant que tu n'entres pas un nombre</td></tr>
+          <tr><td><code>1=oui vide=non :</code></td><td>une étape que tu peux sauter : EXE seul et le script passe à la suite (ou s'arrête)</td></tr>
+        </table>
+
+        <h3>Lettres grecques et Δ</h3>
+        <table>
+          <tr><td><code>g</code></td><td><b>γ</b> = C<sub>p</sub>/C<sub>v</sub>. 1,4 pour l'air — c'est la valeur prise si tu laisses vide</td></tr>
+          <tr><td><code>eps</code></td><td><b>ε</b> taux de compression = V<sub>B</sub>/V<sub>A</sub></td></tr>
+          <tr><td><code>lam</code></td><td><b>λ</b> excès d'air (1 = pile la stoechiométrie)</td></tr>
+          <tr><td><code>rho</code></td><td><b>ρ</b> rapport de combustion du diesel = V<sub>D</sub>/V<sub>C</sub> = T<sub>D</sub>/T<sub>C</sub></td></tr>
+          <tr><td><code>eta</code></td><td><b>η</b> rendement. <code>eta th</code> théorique, <code>eta eff</code> effectif</td></tr>
+          <tr><td><code>e</code></td><td>raccourci pour ε<sup>(1−γ)</sup>, seulement dans la formule du diesel</td></tr>
+          <tr><td><code>dT</code> <code>dU</code> <code>dH</code></td><td><b>ΔT</b>, <b>ΔU</b>, <b>ΔH</b> — une variation, toujours « final − initial »</td></tr>
+        </table>
+
+        <h3>Les grandeurs</h3>
+        <table>
+          <tr><td><code>R</code></td><td>8,314 J·mol⁻¹·K⁻¹, la constante des gaz parfaits</td></tr>
+          <tr><td><code>n</code></td><td>nombre de moles</td></tr>
+          <tr><td><code>Cv</code> <code>Cp</code></td><td>capacités <b>molaires</b> (majuscules), à employer avec n : Q = n·C<sub>v</sub>·ΔT. <i>MOTEUR, TRANSFO</i></td></tr>
+          <tr><td><code>cp</code> <code>c</code></td><td>capacités <b>massiques</b> (minuscules), à employer avec une masse : Q = m·c·ΔT. <i>CYCLEGAZ, THERM, PAC</i></td></tr>
+          <tr><td><code>W</code> et <code>w</code></td><td>travail. <b>Majuscule</b> = en joules pour un cycle ; <b>minuscule</b> = en J/kg (machines ouvertes). Même règle pour <code>Q</code> et <code>q</code></td></tr>
+          <tr><td><code>m</code> <code>mdot</code></td><td>masse en kg, et débit massique en kg/s (le « dot », c'est le point au-dessus du m)</td></tr>
+          <tr><td><code>h1</code> … <code>h4</code></td><td>enthalpies massiques du frigo, en kJ/kg. <code>h2s</code> = ce que vaudrait h<sub>2</sub> si le compresseur était parfait</td></tr>
+          <tr><td><code>L</code></td><td>chaleur latente en J/kg (changement d'état, à température constante)</td></tr>
+          <tr><td><code>PCI</code></td><td>pouvoir calorifique inférieur du carburant, en kJ/kg</td></tr>
+          <tr><td><code>AF</code></td><td>rapport air/carburant <b>en masse</b> (« air-fuel »)</td></tr>
+          <tr><td><code>PSN</code> <code>COP</code></td><td>efficacité du frigo (q<sub>2</sub>/w) et de la PAC (−q<sub>1</sub>/w). <code>PSNmax</code> et <code>COPmax</code> sont les bornes de Carnot</td></tr>
+          <tr><td><code>ef</code> <code>em</code></td><td>rendement de forme et rendement mécanique, entre 0 et 1</td></tr>
+          <tr><td><code>Wth Wind Wdisp</code></td><td>travail théorique, puis indiqué (× ef), puis disponible (× em)</td></tr>
+          <tr><td><code>z</code> <code>N</code></td><td>nombre de cylindres, vitesse de rotation en tr/min</td></tr>
+          <tr><td><code>kt</code></td><td>120 en 4 temps, 60 en 2 temps (2 tours par cycle contre 1)</td></tr>
+          <tr><td><code>A B C D E</code></td><td>les points du cycle moteur : A volume mort · B fin d'admission · C fin de compression · D fin de combustion · E fin de détente</td></tr>
+          <tr><td><code>etat 1, 2, 3…</code></td><td>dans CYCLEGAZ, l'état du fluide après chaque organe traversé</td></tr>
+        </table>
+
+        <h3>Les unités affichées</h3>
+        <table>
+          <tr><td><code>J/molK</code></td><td>J·mol⁻¹·K⁻¹ : l'énergie qu'il faut pour monter <b>1 mole</b> de <b>1 K</b></td></tr>
+          <tr><td><code>J/kgK</code></td><td>J·kg⁻¹·K⁻¹ : la même chose pour <b>1 kg</b></td></tr>
+          <tr><td><code>J/kg</code> <code>kJ/kg</code></td><td>par kilo de fluide qui traverse la machine</td></tr>
+          <tr><td><code>bar</code></td><td>1 bar = 10<sup>5</sup> Pa. Tu tapes des bars, le script convertit tout seul</td></tr>
+          <tr><td><code>C</code> et <code>K</code></td><td>tu <b>tapes</b> des °C, le script <b>affiche</b> des K (+ 273,15). Les formules ne marchent qu'en kelvin</td></tr>
+          <tr><td><code>cm3</code> <code>L</code> <code>m3</code></td><td>volumes. 1 L = 1000 cm³ = 10⁻³ m³</td></tr>
+          <tr><td><code>mg</code></td><td>milligramme — la masse de carburant par cycle est minuscule (≈ 35 mg)</td></tr>
+          <tr><td><code>tr/min</code> <code>m3/h</code></td><td>tours par minute, mètres cubes par heure</td></tr>
+        </table>
+
+        <div class="warn"><b>Le piège classique :</b> <code>Cv</code> et <code>Cp</code> en majuscules sont
+          <b>molaires</b> (× n), <code>cp</code> et <code>c</code> en minuscules sont <b>massiques</b> (× m).
+          Prendre l'une pour l'autre fait une erreur d'un facteur ~30.</div>
+      </div>
+    </details>
   </section>
 
   <!-- QUIZ -->
