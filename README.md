@@ -20,7 +20,8 @@ Ouvrir `index.html` dans un navigateur, ou via GitHub Pages.
 
 ## Exos & scripts Casio
 
-[`exos.html`](exos.html) reprend les 9 exercices types de l'examen (A1-C3) et donne pour chacun :
+[`exos.html`](exos.html) reprend les 9 exercices types de l'examen (A1-C3) et les 4 exercices
+supplementaires du cours (D1-D4), et donne pour chacun :
 la valeur a trouver, le script a lancer, ce qu'il faut taper question par question, et la ligne de
 sortie ou lire la reponse. Les valeurs ont ete verifiees en executant chaque script.
 
