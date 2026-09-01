@@ -420,21 +420,13 @@
         <li><span class="q">b)</span><span><out>PSN = 4.235</out> → <b>PSN = 4,24</b></span></li>
         <li><span class="q">c)</span><span><out>mdot kg/s = 0.056</out> → <b>0,0556 kg/s</b>
           (c'est l'évaporateur qui produit les 8 kW)</span></li>
-        <li><span class="q">d)</span><span><out>Pcomp kW = 1.889</out> → <b>1,89 kW</b>.
-          Pour le condenseur, <b>n'utilise pas <out>Pautre</out></b> → encadré rouge.</span></li>
+        <li><span class="q">d)</span><span><out>Pcomp kW = 1.889</out> → <b>1,89 kW</b> et
+          <out>Pcond kW = 9.889</out> → <b>9,89 kW</b></span></li>
       </ul>
 
-      <div class="bug"><b>Bug dans PAC.py : <code>Pautre</code> est faux en mode frigo</b>
-        Le script affiche <out>Pautre kW = 6.111</out>, alors que le condenseur évacue
-        <b>9,89 kW</b>. Il calcule <code>Putile − Pcomp</code>, ce qui est juste pour une PAC
-        (où Putile est déjà le condenseur) mais faux pour un frigo : côté froid il faut
-        <b>additionner</b>.<br><br>
-        <b>En mode frigo, fais-le de tête :</b> P<sub>cond</sub> = P<sub>utile</sub> + P<sub>comp</sub>
-        = 8 + 1,89 = <b>9,89 kW</b>. C'est d'ailleurs la phrase à écrire : le condenseur évacue le
-        froid pris <i>plus</i> le travail payé.<br><br>
-        <span style="color:var(--dim)">Correctif si tu veux patcher le script : dans PAC.py, remplacer
-        <code>p("Pautre kW", pu - md * w)</code> par
-        <code>p("Pautre kW", pu + md * w if m == "1" else pu - md * w)</code>.</span></div>
+      <div class="note"><b>La phrase qui vaut le point de d)</b>
+        8 + 1,89 = 9,89 kW : le condenseur évacue le froid pris <i>plus</i> le travail payé.
+        C'est le premier principe sur le cycle, q₁ + q₂ + w = 0, relu en puissances.</div>
     </div>
   </article>
 
@@ -506,9 +498,8 @@
         <li><span class="q">a)</span><span><out>mdot kg/s = 0.081</out> → <b>0,0806 kg/s</b>
           (c'est le condenseur qui fournit les 15 kW, d'où le choix « 2=pac »)</span></li>
         <li><span class="q">b)</span><span><out>Pcomp kW = 3.804</out> → <b>3,80 kW</b></span></li>
-        <li><span class="q">c)</span><span><out>Pautre kW = 11.196</out> → P<sub>évap</sub> =
-          <b>11,20 kW</b>, et 3,80 + 11,20 = 15,0 kW ✓ &nbsp;<span class="skip">(ici en mode PAC,
-          <out>Pautre</out> est correct)</span></span></li>
+        <li><span class="q">c)</span><span><out>Pevap kW = 11.196</out> → P<sub>évap</sub> =
+          <b>11,20 kW</b>, et 3,80 + 11,20 = 15,0 kW ✓</span></li>
         <li><span class="q">d)</span><span><out>mdot2 kg/s = 0.512</out> → <b>0,512 kg/s</b>.
           Pour les m³/h : THERM.py, choix <code>4</code>, puis <code>P= 15</code>,
           <code>mdot= EXE</code>, <code>c= 4185</code>, <code>dT= 7</code> →
@@ -529,18 +520,16 @@
         tout le moteur et divise lui-même par le nombre de cylindres. 4 × 0,5 L → tape 2 et 4.</span></li>
       <li><span class="q">2</span><span><b>n est arrondi à 0,02</b> dans MOTEUR.py. Recalcule-le si
         l'énoncé le demande (B1 b).</span></li>
-      <li><span class="q">3</span><span><b><out>Pautre</out> est faux en mode frigo</b> :
-        P<sub>cond</sub> = P<sub>utile</sub> + P<sub>comp</sub>, pas la différence (C1 d).</span></li>
-      <li><span class="q">4</span><span><b>TRANSFO.py : une seule case vide</b> parmi p1/V1/T1/n à
+      <li><span class="q">3</span><span><b>TRANSFO.py : une seule case vide</b> parmi p1/V1/T1/n à
         l'état 1, et seulement la donnée connue à l'état 2.</span></li>
-      <li><span class="q">5</span><span><b>Le rendement d'un cycle est à faire à la main</b> :
+      <li><span class="q">4</span><span><b>Le rendement d'un cycle est à faire à la main</b> :
         η = |ΣW| / Σ(Q reçus), en ne comptant que les Q &gt; 0.</span></li>
-      <li><span class="q">6</span><span><b>Certaines sorties se collent au prompt précédent</b>
+      <li><span class="q">5</span><span><b>Certaines sorties se collent au prompt précédent</b>
         (<code>em= Windique J = 638.93</code>). Ce n'est pas un bug, juste l'affichage.</span></li>
-      <li><span class="q">7</span><span><b>Le guide-casio.pdf décrit les anciens libellés</b>
+      <li><span class="q">6</span><span><b>Le guide-casio.pdf décrit les anciens libellés</b>
         (<code>3isoT 4adia:</code>, <code>m carb kg=</code>). Les scripts actuels posent les mêmes
         questions dans le même ordre, mais reformulées.</span></li>
-      <li><span class="q">8</span><span><b>Les scripts donnent les nombres, pas les points.</b>
+      <li><span class="q">7</span><span><b>Les scripts donnent les nombres, pas les points.</b>
         Écris toujours la formule et le type de transformation avant la valeur.</span></li>
     </ul>
   </div>

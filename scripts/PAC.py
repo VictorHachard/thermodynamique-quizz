@@ -65,7 +65,10 @@ if pu is not None:
     md = pu / qu
     p("mdot kg/s", md)
     p("Pcomp kW", md * w)
-    p("Pautre kW", pu - md * w)
+    if m == "1":
+        p("Pcond kW", pu + md * w)
+    else:
+        p("Pevap kW", pu - md * w)
     ce = q("c du secondaire J/kgK si connu", "csec= ")
     if ce is not None:
         dt = q("delta T secondaire C", "dT= ")
