@@ -31,6 +31,11 @@
   .mode b{display:block}
   .mode small{color:var(--dim)}
   .mode input{margin-top:4px;accent-color:var(--acc)}
+  .exolink{display:block;margin-top:14px;padding:14px 16px;border:1px solid var(--line);
+           border-radius:10px;background:var(--panel);text-decoration:none;color:var(--txt)}
+  .exolink:hover{border-color:var(--acc)}
+  .exolink b{display:block;color:var(--acc)}
+  .exolink small{color:var(--dim)}
   /* progression */
   .top{display:flex;justify-content:space-between;align-items:center;
        font-size:13px;color:var(--dim);margin-bottom:8px}
@@ -125,6 +130,10 @@
         <span><b>Partie courte</b><small>15 questions au hasard au lieu des 34.</small></span></label>
       <div><button class="primary" id="start">Commencer</button></div>
     </div>
+    <a class="exolink" href="exos.html">
+      <span><b>Exos &amp; scripts Casio →</b>
+      <small>Les 9 exercices types de l'examen : quoi trouver, quel script, quoi taper, quoi lire.</small></span>
+    </a>
   </section>
 
   <!-- QUIZ -->

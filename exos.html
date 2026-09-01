@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exos &amp; scripts Casio</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232d; --line:#2a323d;
+    --txt:#e6edf3; --dim:#96a3b3; --acc:#4f8cff; --ok:#2ea043; --ko:#e5534b; --warn:#d29922;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font:16px/1.55 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       -webkit-text-size-adjust:100%}
+  .wrap{max-width:880px;margin:0 auto;padding:20px 16px 80px}
+  a{color:var(--acc)}
+  h1{font-size:23px;margin:0 0 4px}
+  .sub{color:var(--dim);font-size:14px;margin:0 0 20px}
+  .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .btn{display:inline-block;font-size:13px;text-decoration:none;padding:6px 12px;border-radius:8px;
+       border:1px solid var(--line);background:var(--panel2);color:var(--txt)}
+  .btn:hover{border-color:var(--acc)}
+  .btn.dl{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+  .btn.dl:hover{filter:brightness(1.12)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);
+     margin:34px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+  h3{font-size:17px;margin:0}
+  code{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:.9em;
+       background:#0b0e13;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  /* rappels */
+  .rules{list-style:none;padding:0;margin:0;display:grid;gap:9px}
+  .rules li{display:flex;gap:11px;align-items:flex-start}
+  .rules .k{flex:0 0 auto;font-size:11px;font-weight:700;color:var(--acc);
+            border:1px solid var(--acc);border-radius:5px;padding:1px 7px;margin-top:2px}
+  /* table de choix */
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);font-weight:600}
+  tr:last-child td{border-bottom:none}
+  .pick td:first-child{white-space:nowrap;font-family:ui-monospace,Consolas,monospace;color:var(--acc)}
+  /* exo */
+  .exo{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+       padding:0;margin-bottom:16px;overflow:hidden}
+  .exo-h{display:flex;gap:11px;align-items:center;flex-wrap:wrap;
+         padding:14px 18px;background:var(--panel2);border-bottom:1px solid var(--line)}
+  .ref{font-size:12px;font-weight:700;color:#fff;background:var(--acc);border-radius:6px;padding:2px 9px}
+  .script{margin-left:auto;font-family:ui-monospace,Consolas,monospace;font-size:12.5px;
+          color:var(--acc);border:1px solid var(--acc);border-radius:6px;padding:2px 9px;white-space:nowrap}
+  .exo-b{padding:16px 18px}
+  .enonce{margin:0 0 14px;color:var(--dim);font-size:14.5px}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);
+       margin:18px 0 7px;font-weight:600}
+  .lbl:first-child{margin-top:0}
+  .find{border-left:2px solid var(--acc);padding-left:12px;margin-bottom:4px}
+  .io{margin-bottom:4px}
+  .io td:first-child{width:44%;font-family:ui-monospace,Consolas,monospace;font-size:13.5px;color:var(--dim)}
+  .io td:last-child{font-family:ui-monospace,Consolas,monospace;font-size:13.5px;font-weight:600}
+  .io .skip{color:var(--dim);font-weight:400;font-style:italic}
+  .step{font-size:12.5px;color:var(--acc);font-weight:600;padding-top:14px}
+  .read{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+  .read li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px}
+  .read .q{flex:0 0 20px;color:var(--dim);font-weight:600}
+  .read out{font-family:ui-monospace,Consolas,monospace;font-size:13px;color:#9fe0ae;
+            background:#0b0e13;border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+  .read b{color:var(--txt)}
+  .hand{border:1px dashed var(--line);border-radius:7px;padding:2px 7px;font-size:12px;color:var(--warn)}
+  /* encadrés */
+  .note,.warn{border-radius:9px;padding:11px 14px;margin-top:16px;font-size:14px}
+  .note{background:rgba(79,140,255,.09);border:1px solid rgba(79,140,255,.45)}
+  .warn{background:rgba(210,153,34,.09);border:1px solid rgba(210,153,34,.5)}
+  .bug{background:rgba(229,83,75,.09);border:1px solid rgba(229,83,75,.55);
+       border-radius:9px;padding:11px 14px;margin-top:16px;font-size:14px}
+  .note b,.warn b,.bug b{display:block;margin-bottom:3px}
+  .warn b{color:var(--warn)} .bug b{color:var(--ko)} .note b{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div>
+      <h1>Exos &amp; scripts Casio</h1>
+      <p class="sub">Les 9 exercices types de l'examen, et pour chacun : quoi trouver, quel script,
+        quoi taper, quoi lire.</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a class="btn" href="index.html">← Quiz de théorie</a>
+      <a class="btn dl" href="scripts.zip" download>⤓ Les 7 scripts (.zip)</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="lbl">Les 3 règles des scripts</div>
+    <ul class="rules">
+      <li><span class="k">EXE</span><span><b>EXE sans rien taper = « je n'ai pas cette donnée ».</b>
+        Le script saute la question ou calcule la valeur autrement. Ne tape que ce que l'énoncé te donne.</span></li>
+      <li><span class="k">unités</span><span>Températures en <b>°C</b> (le script convertit en kelvin),
+        pressions en <b>bar</b>, volumes en <b>L</b>. Les sorties, elles, sont en K.</span></li>
+      <li><span class="k">.</span><span>Séparateur décimal = le <b>point</b>. Tape <code>1.4</code>, pas <code>1,4</code>.</span></li>
+    </ul>
+    <div class="lbl">Données communes</div>
+    <p style="margin:0;font-size:14.5px">R = 8,314 J/(mol·K) · air γ = 1,4 donc Cv = 20,785 et
+      Cp = 29,099 J/(mol·K) · air = 21 % O₂ (M = 28,9 g/mol) · c<sub>eau</sub> = 4185 J/(kg·K).</p>
+  </div>
+
+  <div class="card">
+    <div class="lbl">Quel script pour quel exercice</div>
+    <table class="pick">
+      <tr><td><a href="scripts/TRANSFO.py">TRANSFO.py</a></td><td>une <b>seule</b> transformation d'un gaz parfait (isobare, isochore,
+        isotherme, adiabatique) → p, V, T, W, Q, ΔU, ΔH. &nbsp;<span style="color:var(--dim)">A1, A2, A3</span></td></tr>
+      <tr><td><a href="scripts/MOTEUR.py">MOTEUR.py</a></td><td>moteur à piston 4 ou 2 temps, essence ou diesel : tous les points du
+        cycle, les rendements, la puissance. &nbsp;<span style="color:var(--dim)">B1, B2, B3</span></td></tr>
+      <tr><td><a href="scripts/PAC.py">PAC.py</a></td><td>frigo et pompe à chaleur : w, q1, q2, PSN, COP, Carnot, débits.
+        &nbsp;<span style="color:var(--dim)">C1, C2, C3</span></td></tr>
+      <tr><td><a href="scripts/COMB.py">COMB.py</a></td><td>combustion d'un CxHy, excès d'air λ, quantité d'air.
+        &nbsp;<span style="color:var(--dim)">vérif de B2</span></td></tr>
+      <tr><td><a href="scripts/THERM.py">THERM.py</a></td><td>Q = mcΔT, chaleur latente, mélange, circuit à débit.
+        &nbsp;<span style="color:var(--dim)">C3 d)</span></td></tr>
+      <tr><td><a href="scripts/CYCLEGAZ.py">CYCLEGAZ.py</a></td><td>turbine à gaz / cycle de Joule (pas utilisé ici, mais annoncé au cours).</td></tr>
+      <tr><td><a href="scripts/FICHE.py">FICHE.py</a></td><td>le formulaire en 12 pages, aucun calcul.</td></tr>
+    </table>
+    <p class="sub" style="margin:12px 0 0">Clique un nom pour voir le code, ou prends
+      <a href="scripts.zip" download>les 7 d'un coup en .zip</a> puis copie les <code>.py</code> dans
+      la mémoire de la Casio (menu Python → sélectionner → EXE).</p>
+  </div>
+
+  <!-- ============ A ============ -->
+  <h2>A — Transformations et cycles</h2>
+
+  <article class="exo">
+    <div class="exo-h"><span class="ref">A1</span><h3>Compression adiabatique</h3><span class="script">TRANSFO.py</span></div>
+    <div class="exo-b">
+      <p class="enonce">2 mol d'air comprimées de façon adiabatique réversible. État initial : 20 °C
+        sous 1 bar. État final : 8 bar.</p>
+
+      <div class="lbl">À trouver</div>
+      <div class="find">a) V₁ &nbsp;· &nbsp;b) T₂ puis V₂ &nbsp;· &nbsp;c) W, Q, ΔU et ΔH</div>
+
+      <div class="lbl">Ce que tu tapes — 1 seul passage</div>
+      <table class="io">
+        <tr><td>gamma=</td><td>1.4</td></tr>
+        <tr><td>p1=</td><td>1</td></tr>
+        <tr><td>V1=</td><td class="skip">EXE — c'est l'inconnue</td></tr>
+        <tr><td>T1=</td><td>20</td></tr>
+        <tr><td>n=</td><td>2</td></tr>
+        <tr><td>1, 2, 3 ou 4 :</td><td>4 <span class="skip">(adiabatique)</span></td></tr>
+        <tr><td>p2=</td><td>8</td></tr>
+        <tr><td>V2=</td><td class="skip">EXE</td></tr>
+        <tr><td>T2=</td><td class="skip">EXE</td></tr>
+      </table>
+
+      <div class="lbl">Ce que tu lis</div>
+      <ul class="read">
+        <li><span class="q">a)</span><span><out>V1 L = 48.745</out> → <b>V₁ = 48,75 L</b></span></li>
+        <li><span class="q">b)</span><span><out>T2 K = 531.026</out> → <b>T₂ = 531,0 K</b> &nbsp;et&nbsp;
+          <out>V2 L = 11.037</out> → <b>V₂ = 11,04 L</b></span></li>
+        <li><span class="q">c)</span><span><out>W J = 9888.496</out> → <b>W = +9888 J</b> ·
+          <out>Q J = 0.0</out> · <out>dU J = 9888.496</out> · <out>dH J = 13843.895</out> → <b>ΔH = +13 844 J</b></span></li>
+      </ul>
+
+      <div class="note"><b>Le contrôle qui rapporte des points</b>
+        W &gt; 0 : le gaz reçoit du travail, c'est bien une compression. Et Q = 0 par définition de
+        l'adiabatique, donc W = ΔU — écris-le, c'est le raisonnement qui est noté.</div>
+    </div>
+  </article>
+
+  <article class="exo">
+    <div class="exo-h"><span class="ref">A2</span><h3>Cycle à deux isochores et deux isobares</h3><span class="script">TRANSFO.py × 4</span></div>
+    <div class="exo-b">
+      <p class="enonce">1 mol d'air décrit le cycle ABCDA. A : 1 bar et 300 K. A→B isochore jusqu'à
+        3 bar ; B→C isobare jusqu'au double du volume ; C→D isochore jusqu'à 1 bar ; D→A isobare.</p>
+
+      <div class="lbl">À trouver</div>
+      <div class="find">a) p, V et T aux 4 points &nbsp;· &nbsp;b) W et Q de chaque transformation
+        &nbsp;· &nbsp;c) le bilan, et si le cycle est moteur &nbsp;· &nbsp;d) le rendement</div>
+
+      <div class="lbl">Ce que tu tapes — 4 passages, un par transformation</div>
+      <p class="enonce" style="margin-bottom:10px">L'état 2 d'un passage devient l'état 1 du suivant.
+        Les températures se tapent en °C : 300 K → <code>26.85</code>, 900 K → <code>626.85</code>,
+        1800 K → <code>1526.85</code>, 600 K → <code>326.85</code>.</p>
+      <table class="io">
+        <tr><td class="step" colspan="2">Passage 1 — A→B, isochore</td></tr>
+        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 1 / EXE / 26.85 / 1</td></tr>
+        <tr><td>1, 2, 3 ou 4 :</td><td>2 <span class="skip">(isochore)</span></td></tr>
+        <tr><td>p2= / V2= / T2=</td><td>3 / EXE / EXE</td></tr>
+        <tr><td class="step" colspan="2">Passage 2 — B→C, isobare</td></tr>
+        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 3 / EXE / 626.85 / 1</td></tr>
+        <tr><td>1, 2, 3 ou 4 :</td><td>1 <span class="skip">(isobare)</span></td></tr>
+        <tr><td>p2= / V2= / T2=</td><td>EXE / 49.886 <span class="skip">(= 2 × 24,942)</span> / EXE</td></tr>
+        <tr><td class="step" colspan="2">Passage 3 — C→D, isochore</td></tr>
+        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 3 / EXE / 1526.85 / 1</td></tr>
+        <tr><td>1, 2, 3 ou 4 :</td><td>2</td></tr>
+        <tr><td>p2= / V2= / T2=</td><td>1 / EXE / EXE</td></tr>
+        <tr><td class="step" colspan="2">Passage 4 — D→A, isobare</td></tr>
+        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 1 / EXE / 326.85 / 1</td></tr>
+        <tr><td>1, 2, 3 ou 4 :</td><td>1</td></tr>
+        <tr><td>p2= / V2= / T2=</td><td>EXE / 24.943 / EXE</td></tr>
+      </table>
+
+      <div class="lbl">Ce que tu lis</div>
+      <ul class="read">
+        <li><span class="q">a)</span><span>Les lignes <out>p2 bar</out> <out>V2 L</out> <out>T2 K</out>
+          de chaque passage donnent le tableau :<br>
+          <b>A</b> 1 bar / 24,94 L / 300 K · <b>B</b> 3 / 24,94 / 900 · <b>C</b> 3 / 49,89 / 1800 ·
+          <b>D</b> 1 / 49,89 / 600</span></li>
+        <li><span class="q">b)</span><span>Les lignes <out>W J</out> et <out>Q J</out> :<br>
+          AB <b>W = 0</b>, <b>Q = +12 471</b> · BC <b>W = −7483</b>, <b>Q = +26 191</b> ·
+          CD <b>W = 0</b>, <b>Q = −24 942</b> · DA <b>W = +2494</b>, <b>Q = −8729</b></span></li>
+        <li><span class="q">c)</span><span><span class="hand">à la main</span> ΣW = −7483 + 2494 =
+          <b>−4988 J</b> et ΣQ = <b>+4988 J</b>. ΣW + ΣQ = 0 ✓, et W &lt; 0 → <b>cycle moteur</b>.</span></li>
+        <li><span class="q">d)</span><span><span class="hand">à la main</span> La chaleur payée n'est
+          que celle <b>reçue</b> : Q<sub>AB</sub> + Q<sub>BC</sub> = 38 662 J.<br>
+          η = 4988 / 38 662 = <b>12,9 %</b></span></li>
+      </ul>
+
+      <div class="warn"><b>Le script ne fait pas le rendement d'un cycle</b>
+        Il traite une transformation à la fois. C'est à toi d'additionner, et surtout de ne garder que
+        les Q positifs au dénominateur. C'est là qu'on perd des points, pas dans le calcul.</div>
+    </div>
+  </article>
+
+  <article class="exo">
+    <div class="exo-h"><span class="ref">A3</span><h3>Cycle de Carnot</h3><span class="script">TRANSFO.py × 3 + main</span></div>
+    <div class="exo-b">
+      <p class="enonce">1 mol d'air, cycle de Carnot entre une source chaude à 500 K et une source
+        froide à 300 K. La détente isotherme B→C fait passer le volume de 10 L à 30 L.</p>
+
+      <div class="lbl">À trouver</div>
+      <div class="find">a) η par la formule de Carnot &nbsp;· &nbsp;b) Q₁ &nbsp;· &nbsp;c) W puis Q₂
+        &nbsp;· &nbsp;d) retrouver η par 1 + Q₂/Q₁ &nbsp;· &nbsp;e) V<sub>A</sub>, V<sub>D</sub> et
+        vérifier V<sub>A</sub>/V<sub>D</sub> = V<sub>B</sub>/V<sub>C</sub></div>
+
+      <div class="lbl">Ce que tu tapes</div>
+      <table class="io">
+        <tr><td class="step" colspan="2">Pour b) — isotherme B→C</td></tr>
+        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / EXE / 10 / 226.85 / 1</td></tr>
+        <tr><td>1, 2, 3 ou 4 :</td><td>3 <span class="skip">(isotherme)</span></td></tr>
+        <tr><td>p2= / V2= / T2=</td><td>EXE / 30 / EXE</td></tr>
+        <tr><td class="step" colspan="2">Pour e) — adiabatique B→A, puis C→D</td></tr>
+        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / EXE / <b>10</b> / 226.85 / 1
+          &nbsp;<span class="skip">puis <b>30</b> au 2ᵉ passage</span></td></tr>
+        <tr><td>1, 2, 3 ou 4 :</td><td>4 <span class="skip">(adiabatique)</span></td></tr>
+        <tr><td>p2= / V2= / T2=</td><td>EXE / EXE / 26.85 <span class="skip">(= 300 K)</span></td></tr>
+      </table>
+
+      <div class="lbl">Ce que tu lis</div>
+      <ul class="read">
+        <li><span class="q">a)</span><span><span class="hand">à la main</span>
+          η = 1 − T₂/T₁ = 1 − 300/500 = <b>40 %</b></span></li>
+        <li><span class="q">b)</span><span><out>Q J = 4566.931</out> → <b>Q₁ = +4567 J</b>
+          (l'isotherme donne aussi <out>W J = -4566.931</out>, puisque ΔU = 0)</span></li>
+        <li><span class="q">c)</span><span><span class="hand">à la main</span> |W| = η·Q₁ = 0,4 × 4567 =
+          1827 J, cycle moteur donc <b>W = −1827 J</b>. Puis par le bilan
+          Q₂ = −Q₁ − W = <b>−2740 J</b></span></li>
+        <li><span class="q">d)</span><span><span class="hand">à la main</span>
+          η = 1 + Q₂/Q₁ = 1 − 2740/4567 = <b>40 %</b> ✓ les deux chemins concordent</span></li>
+        <li><span class="q">e)</span><span>1ᵉʳ passage <out>V2 L = 35.861</out> → <b>V<sub>A</sub> = 35,9 L</b> ·
+          2ᵉ passage <out>V2 L = 107.583</out> → <b>V<sub>D</sub> = 107,6 L</b><br>
+          35,861 / 107,583 = 0,333 = 10 / 30 ✓ — c'est cette égalité qui fait disparaître les
+          logarithmes dans la démonstration de Carnot.</span></li>
+      </ul>
+
+      <div class="warn"><b>L'état 1 doit avoir exactement une case vide</b>
+        Parmi <code>p1</code>, <code>V1</code>, <code>T1</code> et <code>n</code>, laisse-en <b>une seule</b>
+        vide : c'est celle que le script calcule par pV = nRT. Si tu en laisses deux, il plante.</div>
+    </div>
+  </article>
+
+  <!-- ============ B ============ -->
+  <h2>B — Moteur essence</h2>
+
+  <article class="exo">
+    <div class="exo-h"><span class="ref">B1</span><h3>Les points du cycle</h3><span class="script">MOTEUR.py</span></div>
+    <div class="exo-b">
+      <p class="enonce">Moteur essence 4 temps, monocylindre, cylindrée 500 cm³, rapport volumétrique
+        ε = 9. Air aspiré à 25 °C sous 1 bar.</p>
+
+      <div class="lbl">À trouver</div>
+      <div class="find">a) V<sub>A</sub> et V<sub>B</sub> &nbsp;· &nbsp;b) le nombre de moles admises
+        &nbsp;· &nbsp;c) T<sub>C</sub> et p<sub>C</sub> &nbsp;· &nbsp;d) le rendement théorique</div>
+
+      <div class="lbl">Ce que tu tapes</div>
+      <table class="io">
+        <tr><td>1 ou 2 : <span class="skip">essence / diesel</span></td><td>1</td></tr>
+        <tr><td>1 ou 2 : <span class="skip">4 temps / 2 temps</span></td><td>1</td></tr>
+        <tr><td>eps=</td><td>9</td></tr>
+        <tr><td>gamma=</td><td>1.4</td></tr>
+        <tr><td>Tadm=</td><td>25</td></tr>
+        <tr><td>padm=</td><td>1</td></tr>
+        <tr><td>cyl=</td><td>0.5 <span class="skip">cylindrée TOTALE en L — 500 cm³ = 0,5 L</span></td></tr>
+        <tr><td>nbcyl=</td><td>1</td></tr>
+      </table>
+
+      <div class="lbl">Ce que tu lis</div>
+      <ul class="read">
+        <li><span class="q">a)</span><span><out>VA cm3 = 62.5</out> et <out>VB cm3 = 562.5</out></span></li>
+        <li><span class="q">b)</span><span><out>n mol = 0.02</out> — <b>arrondi, ne recopie pas ça</b>,
+          voir l'encadré rouge</span></li>
+        <li><span class="q">c)</span><span><out>TC K = 718.01</out> et <out>pC bar = 21.67</out></span></li>
+        <li><span class="q">d)</span><span><out>eta th % = 58.48</out> → <b>η<sub>th</sub> = 58,5 %</b></span></li>
+      </ul>
+
+      <div class="bug"><b>Piège : n s'affiche arrondi à 2 décimales</b>
+        MOTEUR.py arrondit tous ses affichages à 2 décimales, donc n = 0,02269 mol devient
+        <code>0.02</code>. Si l'énoncé demande n, calcule-le directement :
+        n = p<sub>B</sub>·V<sub>B</sub>/(R·T<sub>B</sub>) = 10⁵ × 562,5·10⁻⁶ / (8,314 × 298,15) =
+        <b>0,02269 mol</b>. Toutes les autres sorties du script sont justes, c'est seulement
+        l'affichage de n qui est trop court.</div>
+    </div>
+  </article>
+
+  <article class="exo">
+    <div class="exo-h"><span class="ref">B2</span><h3>La combustion</h3><span class="script">MOTEUR.py — même lancement</span></div>
+    <div class="exo-b">
+      <p class="enonce">Même moteur qu'en B1. Le carburant a pour formule CH₁,₈₅, l'excès d'air vaut
+        λ = 1,15 et son PCI vaut 43 500 kJ/kg.</p>
+
+      <div class="lbl">À trouver</div>
+      <div class="find">a) la quantité d'air réelle par mole de carburant &nbsp;· &nbsp;b) la masse de
+        carburant admise par cycle &nbsp;· &nbsp;c) Q<sub>CD</sub> &nbsp;· &nbsp;d) T<sub>D</sub>,
+        p<sub>D</sub>, puis T<sub>E</sub> et p<sub>E</sub></div>
+
+      <div class="lbl">Ce que tu tapes — ne relance pas, continue B1</div>
+      <table class="io">
+        <tr><td>QCD=</td><td class="skip">EXE — on ne l'a pas, le script va le calculer</td></tr>
+        <tr><td>PCI=</td><td>43500</td></tr>
+        <tr><td>x=</td><td>1</td></tr>
+        <tr><td>y=</td><td>1.85</td></tr>
+        <tr><td>lambda=</td><td>1.15</td></tr>
+      </table>
+
+      <div class="lbl">Ce que tu lis</div>
+      <ul class="read">
+        <li><span class="q">a)</span><span><out>air/carb mol = 8.01</out> →
+          <b>8,009 mol d'air par mole de carburant</b></span></li>
+        <li><span class="q">b)</span><span><out>mcarb mg = 34.89</out> → <b>34,9 mg</b></span></li>
+        <li><span class="q">c)</span><span><out>QCD J = 1517.55</out> → <b>Q<sub>CD</sub> = 1518 J</b></span></li>
+        <li><span class="q">d)</span><span><out>TD K = 3935.49</out> · <out>pD bar = 118.8</out> ·
+          <out>TE K = 1634.19</out> · <out>pE bar = 5.48</out></span></li>
+      </ul>
+
+      <div class="note"><b>Vérifier a) avec COMB.py</b>
+        Tape <code>x= 1</code>, <code>y= 1.85</code>, <code>lambda= 1.15</code> puis EXE sur les
+        quantités : tu lis <out>nair reel = 8.009</out>. Il donne aussi
+        <out>nO2 stoe = 1.462</out> et <out>M carb g/mol = 13.85</out>, les deux nombres qu'il faut
+        écrire dans la rédaction.</div>
+
+      <div class="note"><b>Ordre de grandeur à citer</b>
+        T<sub>D</sub> ≈ 3900 K et p<sub>D</sub> ≈ 119 bar : c'est bien dans les fourchettes du cours
+        (2000–4000 K, 25–130 bar). Le dire en une ligne montre que le résultat a été relu.</div>
+    </div>
+  </article>
+
+  <article class="exo">
+    <div class="exo-h"><span class="ref">B3</span><h3>La puissance</h3><span class="script">MOTEUR.py — relancer</span></div>
+    <div class="exo-b">
+      <p class="enonce">On monte 4 cylindres identiques à celui de B1–B2. η<sub>forme</sub> = 0,72 et
+        η<sub>méca</sub> = 0,85. Le moteur tourne à 4500 tr/min.</p>
+
+      <div class="lbl">À trouver</div>
+      <div class="find">a) le travail théorique, indiqué puis disponible &nbsp;· &nbsp;b) la puissance
+        effective &nbsp;· &nbsp;c) le rendement effectif global</div>
+
+      <div class="lbl">Ce que tu tapes — relance tout, avec 4 cylindres</div>
+      <table class="io">
+        <tr><td>tout comme en B1–B2, sauf :</td><td></td></tr>
+        <tr><td>cyl=</td><td>2 <span class="skip">4 × 0,5 L</span></td></tr>
+        <tr><td>nbcyl=</td><td>4</td></tr>
+        <tr><td>ef=</td><td>0.72</td></tr>
+        <tr><td>em=</td><td>0.85</td></tr>
+        <tr><td>N=</td><td>4500</td></tr>
+      </table>
+
+      <div class="lbl">Ce que tu lis</div>
+      <ul class="read">
+        <li><span class="q">a)</span><span><out>Wth J = 887.4</out> · <out>Windique J = 638.93</out> ·
+          <out>Wdispo J = 543.09</out> &nbsp;<span class="skip">(par cylindre et par cycle)</span></span></li>
+        <li><span class="q">b)</span><span><out>Peff kW = 81.46</out> → <b>81,5 kW</b></span></li>
+        <li><span class="q">c)</span><span><out>eta eff % = 35.79</out> → <b>35,8 %</b></span></li>
+      </ul>
+
+      <div class="note"><b>Pourquoi les valeurs par cylindre ne bougent pas</b>
+        2 L pour 4 cylindres = 0,5 L par cylindre, exactement comme en B1. Donc Q<sub>CD</sub> et
+        W<sub>th</sub> par cylindre sont inchangés : le 4 n'intervient que dans la puissance,
+        P = (N/120)·W·z. Et 81,5 kW pour 2 L, soit ≈ 40 kW/L, c'est réaliste.</div>
+    </div>
+  </article>
+
+  <!-- ============ C ============ -->
+  <h2>C — Machines frigorifiques et pompes à chaleur</h2>
+
+  <article class="exo">
+    <div class="exo-h"><span class="ref">C1</span><h3>Machine frigorifique</h3><span class="script">PAC.py</span></div>
+    <div class="exo-b">
+      <p class="enonce">Une machine frigorifique doit produire 8 kW de froid. Lecture sur le
+        diagramme : h₁ = 396, h₂ = 430, h₃ = 252 kJ/kg.</p>
+
+      <div class="lbl">À trouver</div>
+      <div class="find">a) h₄ et w, q₁, q₂ + le bilan &nbsp;· &nbsp;b) la PSN &nbsp;· &nbsp;c) le débit
+        de fluide frigorigène &nbsp;· &nbsp;d) la puissance du compresseur et celle évacuée au condenseur</div>
+
+      <div class="lbl">Ce que tu tapes</div>
+      <table class="io">
+        <tr><td>h1=</td><td>396</td></tr>
+        <tr><td>h3=</td><td>252</td></tr>
+        <tr><td>h2=</td><td>430 <span class="skip">compresseur idéal ici</span></td></tr>
+        <tr><td>Tfroid=</td><td class="skip">EXE — pas de températures données</td></tr>
+        <tr><td>Putile=</td><td>8</td></tr>
+        <tr><td>1=frigo 2=pac :</td><td>1</td></tr>
+        <tr><td>csec=</td><td class="skip">EXE</td></tr>
+      </table>
+
+      <div class="lbl">Ce que tu lis</div>
+      <ul class="read">
+        <li><span class="q">a)</span><span><b>h₄ = h₃ = 252</b> (détente isenthalpique — le script le
+          sait, il ne le demande pas). Puis <out>w = 34.0</out> · <out>q1 = -178.0</out> ·
+          <out>q2 = 144.0</out> · <out>somme (verif=0) = 0.0</out> ✓</span></li>
+        <li><span class="q">b)</span><span><out>PSN = 4.235</out> → <b>PSN = 4,24</b></span></li>
+        <li><span class="q">c)</span><span><out>mdot kg/s = 0.056</out> → <b>0,0556 kg/s</b>
+          (c'est l'évaporateur qui produit les 8 kW)</span></li>
+        <li><span class="q">d)</span><span><out>Pcomp kW = 1.889</out> → <b>1,89 kW</b>.
+          Pour le condenseur, <b>n'utilise pas <out>Pautre</out></b> → encadré rouge.</span></li>
+      </ul>
+
+      <div class="bug"><b>Bug dans PAC.py : <code>Pautre</code> est faux en mode frigo</b>
+        Le script affiche <out>Pautre kW = 6.111</out>, alors que le condenseur évacue
+        <b>9,89 kW</b>. Il calcule <code>Putile − Pcomp</code>, ce qui est juste pour une PAC
+        (où Putile est déjà le condenseur) mais faux pour un frigo : côté froid il faut
+        <b>additionner</b>.<br><br>
+        <b>En mode frigo, fais-le de tête :</b> P<sub>cond</sub> = P<sub>utile</sub> + P<sub>comp</sub>
+        = 8 + 1,89 = <b>9,89 kW</b>. C'est d'ailleurs la phrase à écrire : le condenseur évacue le
+        froid pris <i>plus</i> le travail payé.<br><br>
+        <span style="color:var(--dim)">Correctif si tu veux patcher le script : dans PAC.py, remplacer
+        <code>p("Pautre kW", pu - md * w)</code> par
+        <code>p("Pautre kW", pu + md * w if m == "1" else pu - md * w)</code>.</span></div>
+    </div>
+  </article>
+
+  <article class="exo">
+    <div class="exo-h"><span class="ref">C2</span><h3>PAC avec compresseur réel</h3><span class="script">PAC.py</span></div>
+    <div class="exo-b">
+      <p class="enonce">PAC entre une évaporation à −10 °C et une condensation à 42 °C. Lecture :
+        h₁ = 399, h₂s = 433 (point isentropique), h₃ = 260 kJ/kg. Rendement isentropique du
+        compresseur η<sub>isos</sub> = 0,72.</p>
+
+      <div class="lbl">À trouver</div>
+      <div class="find">a) h₂ réel &nbsp;· &nbsp;b) w, q₁, q₂ + le bilan &nbsp;· &nbsp;c) le COP
+        &nbsp;· &nbsp;d) le COP maximal théorique, et si le résultat est crédible</div>
+
+      <div class="lbl">Ce que tu tapes</div>
+      <table class="io">
+        <tr><td>h1=</td><td>399</td></tr>
+        <tr><td>h3=</td><td>260</td></tr>
+        <tr><td>h2=</td><td class="skip">EXE — le compresseur n'est pas idéal</td></tr>
+        <tr><td>h2s=</td><td>433</td></tr>
+        <tr><td>eis=</td><td>0.72</td></tr>
+        <tr><td>Tfroid=</td><td>-10</td></tr>
+        <tr><td>Tchaud=</td><td>42</td></tr>
+        <tr><td>Putile=</td><td class="skip">EXE</td></tr>
+      </table>
+
+      <div class="lbl">Ce que tu lis</div>
+      <ul class="read">
+        <li><span class="q">a)</span><span><out>h2 calcule = 446.222</out> → <b>h₂ = 446,2 kJ/kg</b></span></li>
+        <li><span class="q">b)</span><span><out>w = 47.222</out> · <out>q1 = -186.222</out> ·
+          <out>q2 = 139.0</out> · <out>somme (verif=0) = 0.0</out> ✓</span></li>
+        <li><span class="q">c)</span><span><out>COP = 3.944</out> → <b>COP = 3,94</b></span></li>
+        <li><span class="q">d)</span><span><out>COPmax = 6.061</out> → <b>6,06</b>.
+          3,94 &lt; 6,06, soit 65 % du maximum : crédible pour une machine réelle avec un
+          compresseur à 72 %.</span></li>
+      </ul>
+
+      <div class="warn"><b>Tfroid et Tchaud = les températures des SOURCES</b>
+        Ici −10 et 42 °C. Le script les convertit en kelvins tout seul (263,15 et 315,15 K) et sort
+        aussi <out>PSNmax</out> — que tu ignores, puisqu'on te demande le COP d'une PAC, pas la PSN
+        d'un frigo.</div>
+    </div>
+  </article>
+
+  <article class="exo">
+    <div class="exo-h"><span class="ref">C3</span><h3>La même PAC sur un circuit de chauffage</h3><span class="script">PAC.py + THERM.py</span></div>
+    <div class="exo-b">
+      <p class="enonce">La PAC de C2 chauffe une maison qui perd 15 kW. L'eau des radiateurs se
+        réchauffe de 7 °C en traversant le condenseur.</p>
+
+      <div class="lbl">À trouver</div>
+      <div class="find">a) le débit de fluide frigorigène &nbsp;· &nbsp;b) la puissance électrique du
+        compresseur &nbsp;· &nbsp;c) le bilan de puissance &nbsp;· &nbsp;d) le débit d'eau, en kg/s
+        puis en m³/h</div>
+
+      <div class="lbl">Ce que tu tapes</div>
+      <table class="io">
+        <tr><td>h1= / h3= / h2=</td><td>399 / 260 / EXE</td></tr>
+        <tr><td>h2s= / eis=</td><td>433 / 0.72</td></tr>
+        <tr><td>Tfroid=</td><td class="skip">EXE — plus besoin de Carnot ici</td></tr>
+        <tr><td>Putile=</td><td>15</td></tr>
+        <tr><td>1=frigo 2=pac :</td><td>2</td></tr>
+        <tr><td>csec=</td><td>4185</td></tr>
+        <tr><td>dT=</td><td>7</td></tr>
+      </table>
+
+      <div class="lbl">Ce que tu lis</div>
+      <ul class="read">
+        <li><span class="q">a)</span><span><out>mdot kg/s = 0.081</out> → <b>0,0806 kg/s</b>
+          (c'est le condenseur qui fournit les 15 kW, d'où le choix « 2=pac »)</span></li>
+        <li><span class="q">b)</span><span><out>Pcomp kW = 3.804</out> → <b>3,80 kW</b></span></li>
+        <li><span class="q">c)</span><span><out>Pautre kW = 11.196</out> → P<sub>évap</sub> =
+          <b>11,20 kW</b>, et 3,80 + 11,20 = 15,0 kW ✓ &nbsp;<span class="skip">(ici en mode PAC,
+          <out>Pautre</out> est correct)</span></span></li>
+        <li><span class="q">d)</span><span><out>mdot2 kg/s = 0.512</out> → <b>0,512 kg/s</b>.
+          Pour les m³/h : THERM.py, choix <code>4</code>, puis <code>P= 15</code>,
+          <code>mdot= EXE</code>, <code>c= 4185</code>, <code>dT= 7</code> →
+          <out>mdot m3/h eau = 1.843</out> → <b>1,84 m³/h</b></span></li>
+      </ul>
+
+      <div class="note"><b>La phrase qui vaut le point de c)</b>
+        Les 15 kW livrés à la maison = 11,2 kW pris gratuitement à l'air extérieur + 3,8 kW
+        d'électricité payée. C'est tout l'intérêt d'une PAC.</div>
+    </div>
+  </article>
+
+  <!-- ============ pièges ============ -->
+  <h2>Les pièges, en un coup d'œil</h2>
+  <div class="card">
+    <ul class="read">
+      <li><span class="q">1</span><span><b>Cylindrée = totale.</b> MOTEUR.py demande la cylindrée de
+        tout le moteur et divise lui-même par le nombre de cylindres. 4 × 0,5 L → tape 2 et 4.</span></li>
+      <li><span class="q">2</span><span><b>n est arrondi à 0,02</b> dans MOTEUR.py. Recalcule-le si
+        l'énoncé le demande (B1 b).</span></li>
+      <li><span class="q">3</span><span><b><out>Pautre</out> est faux en mode frigo</b> :
+        P<sub>cond</sub> = P<sub>utile</sub> + P<sub>comp</sub>, pas la différence (C1 d).</span></li>
+      <li><span class="q">4</span><span><b>TRANSFO.py : une seule case vide</b> parmi p1/V1/T1/n à
+        l'état 1, et seulement la donnée connue à l'état 2.</span></li>
+      <li><span class="q">5</span><span><b>Le rendement d'un cycle est à faire à la main</b> :
+        η = |ΣW| / Σ(Q reçus), en ne comptant que les Q &gt; 0.</span></li>
+      <li><span class="q">6</span><span><b>Certaines sorties se collent au prompt précédent</b>
+        (<code>em= Windique J = 638.93</code>). Ce n'est pas un bug, juste l'affichage.</span></li>
+      <li><span class="q">7</span><span><b>Le guide-casio.pdf décrit les anciens libellés</b>
+        (<code>3isoT 4adia:</code>, <code>m carb kg=</code>). Les scripts actuels posent les mêmes
+        questions dans le même ordre, mais reformulées.</span></li>
+      <li><span class="q">8</span><span><b>Les scripts donnent les nombres, pas les points.</b>
+        Écris toujours la formule et le type de transformation avant la valeur.</span></li>
+    </ul>
+  </div>
+
+  <p class="sub" style="margin-top:26px">Valeurs vérifiées en exécutant chaque script sur les 9
+    exercices : elles correspondent au corrigé, aux arrondis près.</p>
+
+</div>
+</body>
+</html>
