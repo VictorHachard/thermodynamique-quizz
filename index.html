@@ -71,6 +71,7 @@
   .fail .right{color:var(--ok);font-size:14px;margin-top:4px}
   /* fiche de révision */
   .mini{padding:5px 11px;font-size:13px}
+  .top button{margin-left:9px}
   .grp{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);
        margin:24px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
   .grp:first-child{margin-top:6px}
@@ -108,7 +109,11 @@
 
   <!-- QUIZ -->
   <section id="quiz" class="hidden">
-    <div class="top"><span id="counter"></span><span id="live"></span></div>
+    <div class="top">
+      <span id="counter"></span>
+      <span><span id="live"></span>
+            <button id="quitQuiz" class="mini">Menu</button></span>
+    </div>
     <div class="bar"><div id="prog"></div></div>
     <div class="card">
       <p class="qtxt" id="qtxt"></p>
@@ -339,6 +344,10 @@ $("again").onclick = () => start(QUESTIONS);
 $("retry").onclick = () => { const l = fails.map(f => f.q); $("short").checked = false; start(l); };
 $("menu").onclick = () => { $("res").classList.add("hidden"); $("home").classList.remove("hidden"); };
 $("backSheet").onclick = () => { $("sheet").classList.add("hidden"); $("home").classList.remove("hidden"); };
+$("quitQuiz").onclick = () => {
+  if (idx > 0 && !confirm("Quitter la partie en cours ? Ta progression sera perdue.")) return;
+  $("quiz").classList.add("hidden"); $("home").classList.remove("hidden"); window.scrollTo(0, 0);
+};
 $("toggleA").onclick = () => {
   const off = $("sheet").classList.toggle("noans");
   $("toggleA").textContent = off ? "Afficher les réponses" : "Masquer les réponses";
