@@ -128,6 +128,9 @@
   .nota b{color:var(--txt)}
   .nota .warn{margin-top:16px;padding:12px 14px;border-radius:9px;font-size:13.5px;
               background:rgba(229,83,75,.12);border:1px solid var(--ko);color:var(--txt)}
+  .dia .coil{fill:none;stroke:var(--acc);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+  #qdia .dia{margin:0 0 18px}
+  #sheet.noans .qa .dia.diaq{display:block}
   .hidden{display:none}
 </style>
 </head>
@@ -137,7 +140,7 @@
   <!-- ACCUEIL -->
   <section id="home">
     <h1>Quiz — Mécanique &amp; Thermodynamique</h1>
-    <p class="sub">34 questions préliminaires, tirées dans un ordre différent à chaque partie.</p>
+    <p class="sub">36 questions préliminaires, tirées dans un ordre différent à chaque partie.</p>
     <div class="card">
       <div class="modes">
         <label class="mode sel"><input type="radio" name="mode" value="qcm" checked>
@@ -145,7 +148,7 @@
         <label class="mode"><input type="radio" name="mode" value="libre">
           <span><b>Réponse libre (flashcard)</b><small>Tu écris ta réponse, tu la compares à la correction, tu t'auto-évalues.</small></span></label>
         <label class="mode"><input type="radio" name="mode" value="fiche">
-          <span><b>Fiche de révision</b><small>Les 34 questions et leurs réponses sur une seule page, pour lire avant de te tester.</small></span></label>
+          <span><b>Fiche de révision</b><small>Les 36 questions et leurs réponses sur une seule page, pour lire avant de te tester.</small></span></label>
       </div>
       <label class="mode" id="shortWrap" style="margin-bottom:18px">
         <input type="checkbox" id="short">
@@ -240,6 +243,7 @@
     <div class="bar"><div id="prog"></div></div>
     <div class="card">
       <p class="qtxt" id="qtxt"></p>
+      <div id="qdia"></div>
       <div id="opts" class="opts"></div>
       <div id="freebox" class="hidden">
         <textarea id="free" placeholder="Écris ta réponse ici…"></textarea>
@@ -271,7 +275,7 @@
   <!-- FICHE DE RÉVISION -->
   <section id="sheet" class="hidden">
     <div class="top">
-      <span>Fiche de révision — 34 questions</span>
+      <span>Fiche de révision — 36 questions</span>
       <span><button id="toggleA" class="mini">Masquer les réponses</button>
             <button id="backSheet" class="mini">Menu</button></span>
     </div>
@@ -289,24 +293,24 @@ const shuffle = a => { a = a.slice();
 
 let deck = [], idx = 0, score = 0, fails = [], mode = "qcm", answered = false, cur = null;
 
-/* 8 propositions : la bonne + 7 leurres.
-   On privilégie la même catégorie, puis une longueur voisine de la bonne réponse
-   (sinon la plus longue proposition trahirait la solution), et on garde de
-   l'aléatoire ensuite. Les 3 candidats les plus proches sont toujours présents
-   (PMB face à PMH, l'autre sens de la boucle frigo, le cycle essence face au
-   diesel…) : sans eux la question ne teste plus rien. */
+/* 8 propositions au MAXIMUM, souvent moins. Une question peut imposer sa propre
+   liste courte via le champ "o" (positif / négatif / nul…). Sinon : leurres de la
+   même catégorie uniquement, et seulement ceux dont la longueur est comparable à
+   la bonne réponse — sans quoi la plus longue proposition trahirait la solution
+   et on remplirait la grille avec des réponses hors sujet. */
 function buildOptions(q) {
-  const same = [], other = [];
-  const seen = { [q.a]: 1 };
-  const push = (t, arr) => { if (!seen[t]) { seen[t] = 1; arr.push(t); } };
-  (DECOYS[q.c] || []).forEach(t => push(t, same));
-  QUESTIONS.filter(x => x.c === q.c).forEach(x => push(x.a, same));
-  Object.keys(DECOYS).forEach(k => DECOYS[k].forEach(t => push(t, other)));
-  QUESTIONS.forEach(x => push(x.a, other));
+  if (q.o) return shuffle(q.o);
 
-  const near = arr => shuffle(arr)
+  const same = [];
+  const seen = { [q.a]: 1 };
+  const push = t => { if (!seen[t]) { seen[t] = 1; same.push(t); } };
+  (DECOYS[q.c] || []).forEach(push);
+  QUESTIONS.filter(x => x.c === q.c).forEach(x => push(x.a));
+
+  const tol = Math.max(12, q.a.length);
+  const pool = shuffle(same)
+    .filter(t => Math.abs(t.length - q.a.length) <= tol)
     .sort((x, y) => Math.abs(x.length - q.a.length) - Math.abs(y.length - q.a.length));
-  const pool = near(same).concat(near(other));
   const keep = pool.slice(0, 3).concat(shuffle(pool.slice(3, 16)).slice(0, 4));
   return shuffle([q.a].concat(keep));
 }
@@ -339,6 +343,8 @@ function showSheet() {
       d.children[0].textContent = (QUESTIONS.indexOf(q) + 1) + ".";
       d.children[1].children[0].textContent = q.q;
       d.children[1].children[1].textContent = q.a;
+      const dqs = diagram(q, "dq");
+      if (dqs) d.children[1].insertBefore(dqs, d.children[1].children[1]);
       const dg = diagram(q); if (dg) d.children[1].appendChild(dg);
       box.appendChild(d);
     });
@@ -367,6 +373,8 @@ function render() {
   liveScore();
   $("prog").style.width = (idx / deck.length * 100) + "%";
   $("qtxt").textContent = cur.q;
+  $("qdia").innerHTML = "";
+  const dqd = diagram(cur, "dq"); if (dqd) $("qdia").appendChild(dqd);
   $("fb").className = "fb hidden"; $("fb").textContent = "";
   $("actions").innerHTML = "";
   $("opts").innerHTML = ""; $("opts").classList.add("hidden");
@@ -385,7 +393,9 @@ function render() {
       b.onclick = () => pick(b, txt);
       $("opts").appendChild(b);
     });
-    $("actions").innerHTML = '<span class="hint">Touches 1 à 8 pour répondre, Entrée pour continuer.</span>';
+    const nb = $("opts").children.length;
+    $("actions").innerHTML = '<span class="hint">Touches 1 à ' + nb +
+      ' pour répondre, Entrée pour continuer.</span>';
   } else {
     $("freebox").classList.remove("hidden");
     $("free").value = ""; $("free").disabled = false; $("free").focus();
@@ -394,12 +404,14 @@ function render() {
   }
 }
 
-/* Schéma à savoir refaire (questions 29, 30, 34), affiché avec la correction. */
-function diagram(q) {
-  if (!q.d || !DIAGRAMS[q.d]) return null;
+/* Deux sortes de schémas : "dq" fait partie de l'énoncé (il faut le lire pour répondre),
+   "d" est le schéma à savoir refaire, montré seulement avec la correction. */
+function diagram(q, key) {
+  const k = q[key || "d"];
+  if (!k || !DIAGRAMS[k]) return null;
   const d = document.createElement("div");
-  d.className = "dia";
-  d.innerHTML = DIAGRAMS[q.d];
+  d.className = key === "dq" ? "dia diaq" : "dia";
+  d.innerHTML = DIAGRAMS[k];
   return d;
 }
 
@@ -470,6 +482,7 @@ function finish() {
     d.className = "fail";
     d.innerHTML = '<div class="q"></div><div class="yours"></div><div class="right"></div>';
     d.children[0].textContent = f.q.q;
+    const dqf = diagram(f.q, "dq"); if (dqf) d.children[0].appendChild(dqf);
     d.children[1].textContent = "Ta réponse : " + f.given;
     d.children[2].textContent = "Réponse : " + f.q.a;
     const dg = diagram(f.q); if (dg) d.appendChild(dg);

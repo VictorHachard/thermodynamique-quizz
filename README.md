@@ -1,14 +1,15 @@
 # Quiz — Mécanique & Thermodynamique
 
-Petit quiz web (une page, sans dépendance) pour réviser les 34 questions
+Petit quiz web (une page, sans dépendance) pour réviser les 36 questions
 préliminaires du cours de mécanique et thermodynamique.
 
 - **QCM** : 8 propositions par question, mélangées à chaque tirage.
 - **Réponse libre** : mode flashcard, tu écris puis tu compares à la correction.
 - L'ordre des questions **et** celui des propositions changent à chaque partie.
-- **Fiche de révision** : les 34 questions/réponses sur une seule page, réponses masquables.
+- **Fiche de révision** : les 36 questions/réponses sur une seule page, réponses masquables.
 - Réponses réduites au minimum : ce qu il faut ecrire, rien de plus.
-- Schemas affiches avec la correction : les 4 courbes du diagramme p-V (q22), les cycles essence et diesel (q29, q30), la machine frigo (q34).
+- Schemas dans l enonce : 4 diagrammes p-V a lire pour repondre (q16 a q19).
+- Schemas affiches avec la correction : les 4 courbes du diagramme p-V (q24), les cycles essence et diesel (q31, q32), la machine frigo (q36).
 - Écran de résultat avec la liste des questions ratées et la bonne réponse.
 - Bouton « refaire seulement les ratées ».
 

@@ -18,8 +18,10 @@ const QUESTIONS = [
   { c:"transfo",  q:"Quelle est la caractéristique d'une isotherme ?", a:"T = constante" },
   { c:"transfo",  q:"Quelle est la caractéristique d'une adiabatique réversible ?", a:"Q = 0" },
   { c:"formules", q:"Quelle est la formule générale du travail élémentaire réversible ?", a:"W = − ∫ p dV" },
-  { c:"signes",   q:"Sur un diagramme p‑V, le volume augmente globalement de i à f : le travail est‑il positif, négatif ou nul ?", a:"Négatif (W < 0)" },
-  { c:"cycles",   q:"Sur un diagramme p‑V, un cycle parcouru dans le sens horaire est‑il récepteur ou moteur ?", a:"Moteur" },
+  { c:"signes", dq:"pvDetente", o:["Positif","Négatif","Nul"], q:"Sur ce diagramme p‑V, le gaz va de i à f. Quel est le signe du travail W reçu par le gaz ?", a:"Négatif" },
+  { c:"signes", dq:"pvCompression", o:["Positif","Négatif","Nul"], q:"Même diagramme, flèche inversée : quel est le signe du travail W reçu par le gaz ?", a:"Positif" },
+  { c:"cycles", dq:"pvHoraire", o:["Moteur","Récepteur","Ni l'un ni l'autre"], q:"Sur ce diagramme p‑V, le cycle est parcouru dans le sens des flèches. Le cycle est‑il moteur ou récepteur ?", a:"Moteur" },
+  { c:"cycles", dq:"pvAntiHoraire", o:["Moteur","Récepteur","Ni l'un ni l'autre"], q:"Même cycle, flèches inversées : le cycle est‑il moteur ou récepteur ?", a:"Récepteur" },
   { c:"formules", q:"Quelle est la formule générale du premier principe de la thermodynamique ?", a:"ΔU = W + Q" },
   { c:"formules", q:"Quelle est la formule du premier principe pour un cycle fermé ?", a:"W + Q = 0" },
   { c:"unites",   q:"Quelle est l'unité d'une chaleur spécifique molaire ?", a:"J/(mol·K)" },
@@ -42,6 +44,54 @@ const QUESTIONS = [
 // Schémas à savoir refaire à l'examen, affichés avec la correction.
 // Repères : V_PmH = point mort haut (volume mini, à gauche), V_PmB = point mort bas (à droite).
 const DIAGRAMS = {
+
+  pvDetente: `<svg viewBox="0 0 360 200" role="img" aria-label="Diagramme p-V, evolution de i vers f">
+    <defs><marker id="aDet" markerWidth="8" markerHeight="8" refX="6" refY="3.5"
+      orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="ar"/></marker></defs>
+    <path class="ax" d="M45 20 L45 165 L330 165"/>
+    <text class="lb" x="34" y="26">p</text><text class="lb" x="325" y="182">V</text>
+    <path class="gd" d="M95 130 L95 165 M255 58 L255 165"/>
+    <path class="cv" d="M95 130 C135 88 175 120 247 63" marker-end="url(#aDet)"/>
+    <circle class="pt" cx="95" cy="130" r="4"/><text class="nm" x="85" y="126" text-anchor="end">i</text>
+    <circle class="pt" cx="255" cy="58" r="4"/><text class="nm" x="266" y="54">f</text>
+    <text class="lb" x="95" y="180" text-anchor="middle">V_i</text>
+    <text class="lb" x="255" y="180" text-anchor="middle">V_f</text>
+  </svg>`,
+
+  pvCompression: `<svg viewBox="0 0 360 200" role="img" aria-label="Diagramme p-V, evolution de i vers f">
+    <defs><marker id="aCom" markerWidth="8" markerHeight="8" refX="6" refY="3.5"
+      orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="ar"/></marker></defs>
+    <path class="ax" d="M45 20 L45 165 L330 165"/>
+    <text class="lb" x="34" y="26">p</text><text class="lb" x="325" y="182">V</text>
+    <path class="gd" d="M95 130 L95 165 M255 58 L255 165"/>
+    <path class="cv" d="M255 58 C175 120 138 90 103 125" marker-end="url(#aCom)"/>
+    <circle class="pt" cx="255" cy="58" r="4"/><text class="nm" x="266" y="54">i</text>
+    <circle class="pt" cx="95" cy="130" r="4"/><text class="nm" x="85" y="126" text-anchor="end">f</text>
+    <text class="lb" x="255" y="180" text-anchor="middle">V_i</text>
+    <text class="lb" x="95" y="180" text-anchor="middle">V_f</text>
+  </svg>`,
+
+  pvHoraire: `<svg viewBox="0 0 360 200" role="img" aria-label="Cycle p-V parcouru dans le sens horaire">
+    <defs><marker id="aHor" markerWidth="8" markerHeight="8" refX="6" refY="3.5"
+      orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="ar"/></marker></defs>
+    <path class="ax" d="M45 20 L45 165 L330 165"/>
+    <text class="lb" x="34" y="26">p</text><text class="lb" x="325" y="182">V</text>
+    <path class="cv" d="M107 102 C107 73.3 146.4 50 195 50" marker-end="url(#aHor)"/>
+    <path class="cv" d="M195 50 C243.6 50 283 73.3 283 102" marker-end="url(#aHor)"/>
+    <path class="cv" d="M283 102 C283 130.7 243.6 154 195 154" marker-end="url(#aHor)"/>
+    <path class="cv" d="M195 154 C146.4 154 107 130.7 107 102" marker-end="url(#aHor)"/>
+  </svg>`,
+
+  pvAntiHoraire: `<svg viewBox="0 0 360 200" role="img" aria-label="Cycle p-V parcouru dans le sens antihoraire">
+    <defs><marker id="aAnt" markerWidth="8" markerHeight="8" refX="6" refY="3.5"
+      orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="ar"/></marker></defs>
+    <path class="ax" d="M45 20 L45 165 L330 165"/>
+    <text class="lb" x="34" y="26">p</text><text class="lb" x="325" y="182">V</text>
+    <path class="cv" d="M107 102 C107 130.7 146.4 154 195 154" marker-end="url(#aAnt)"/>
+    <path class="cv" d="M195 154 C243.6 154 283 130.7 283 102" marker-end="url(#aAnt)"/>
+    <path class="cv" d="M283 102 C283 73.3 243.6 50 195 50" marker-end="url(#aAnt)"/>
+    <path class="cv" d="M195 50 C146.4 50 107 73.3 107 102" marker-end="url(#aAnt)"/>
+  </svg>`,
 
   courbes: `<svg viewBox="0 0 360 225" role="img" aria-label="Les quatre courbes par un même point">
     <path class="ax" d="M45 20 L45 196 L205 196"/>
@@ -115,31 +165,50 @@ const DIAGRAMS = {
     <text class="lb" x="45" y="224">3 = ISOBARE (c'est là que le diesel diffère de l'essence)</text>
   </svg>`,
 
-  frigo: `<svg viewBox="0 0 420 232" role="img" aria-label="Schéma d'une machine frigorifique">
-    <defs><marker id="aFrigo" markerWidth="7" markerHeight="7" refX="5" refY="3"
-      orient="auto"><path d="M0,0 L6,3 L0,6 z" class="arl"/></marker></defs>
-    <path class="ln" d="M105 92 L105 40 L166 40" marker-end="url(#aFrigo)"/>
-    <path class="ln" d="M254 40 L315 40 L315 92" marker-end="url(#aFrigo)"/>
-    <path class="ln" d="M315 134 L315 186 L254 186" marker-end="url(#aFrigo)"/>
-    <path class="ln" d="M166 186 L105 186 L105 134" marker-end="url(#aFrigo)"/>
-    <rect class="bx" x="166" y="22"  width="88" height="36" rx="6"/>
-    <text class="nm" x="210" y="45" text-anchor="middle">Compresseur</text>
-    <rect class="bx" x="272" y="92"  width="86" height="42" rx="6"/>
-    <text class="nm" x="315" y="110" text-anchor="middle">Conden-</text>
-    <text class="nm" x="315" y="124" text-anchor="middle">seur (HP)</text>
-    <rect class="bx" x="166" y="168" width="88" height="36" rx="6"/>
-    <text class="nm" x="210" y="191" text-anchor="middle">Détendeur</text>
-    <rect class="bx" x="62"  y="92"  width="86" height="42" rx="6"/>
-    <text class="nm" x="105" y="110" text-anchor="middle">Évapora-</text>
-    <text class="nm" x="105" y="124" text-anchor="middle">teur (BP)</text>
-    <text class="lb" x="54" y="107" text-anchor="end">Source</text>
-    <text class="lb" x="54" y="121" text-anchor="end">froide</text>
-    <text class="lb" x="366" y="107">Source</text>
-    <text class="lb" x="366" y="121">chaude</text>
-    <text class="lb" x="96"  y="70"  text-anchor="end">1</text>
-    <text class="lb" x="324" y="70">2</text>
-    <text class="lb" x="324" y="162">3</text>
-    <text class="lb" x="96"  y="162" text-anchor="end">4</text>
+  frigo: `<svg viewBox="0 0 430 252" role="img" aria-label="Schema d'une machine frigorifique">
+    <defs><marker id="aFrigo" markerWidth="8" markerHeight="8" refX="6" refY="3.5"
+      orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="ar"/></marker>
+      <marker id="aChal" markerWidth="8" markerHeight="8" refX="6" refY="3.5"
+      orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="arl"/></marker></defs>
+
+    <path class="ln" d="M105 100 L105 60 L166 60" marker-end="url(#aFrigo)"/>
+    <path class="ln" d="M254 60 L315 60 L315 100" marker-end="url(#aFrigo)"/>
+    <path class="ln" d="M315 178 L315 205 L240 205" marker-end="url(#aFrigo)"/>
+    <path class="ln" d="M180 205 L105 205 L105 178" marker-end="url(#aFrigo)"/>
+
+    <path class="bx" d="M166 32 L254 46 L254 74 L166 88 z"/>
+    <text class="nm" x="210" y="64" text-anchor="middle">Compresseur</text>
+    <path class="ln" d="M210 8 L210 31" marker-end="url(#aChal)"/>
+    <text class="nm" x="219" y="16">w &gt; 0</text>
+    <text class="lb" x="219" y="29">travail reçu</text>
+
+    <rect class="bx" x="55" y="100" width="100" height="78" rx="7"/>
+    <text class="nm" x="105" y="118" text-anchor="middle">Évaporateur</text>
+    <text class="lb" x="105" y="131" text-anchor="middle">BP · froid</text>
+    <path class="coil" d="M62 158 L74 146 L88 170 L102 146 L116 170 L130 146 L138 152 L148 158"/>
+    <path class="ln" d="M10 139 L48 139" marker-end="url(#aChal)"/>
+    <text class="nm" x="29" y="131" text-anchor="middle">q₂ &gt; 0</text>
+    <text class="lb" x="29" y="163" text-anchor="middle">source</text>
+    <text class="lb" x="29" y="175" text-anchor="middle">froide</text>
+
+    <rect class="bx" x="265" y="100" width="100" height="78" rx="7"/>
+    <text class="nm" x="315" y="118" text-anchor="middle">Condenseur</text>
+    <text class="lb" x="315" y="131" text-anchor="middle">HP · chaud</text>
+    <path class="coil" d="M272 158 L284 146 L298 170 L312 146 L326 170 L340 146 L348 152 L358 158"/>
+    <path class="ln" d="M372 139 L410 139" marker-end="url(#aChal)"/>
+    <text class="nm" x="391" y="131" text-anchor="middle">q₁ &lt; 0</text>
+    <text class="lb" x="391" y="163" text-anchor="middle">source</text>
+    <text class="lb" x="391" y="175" text-anchor="middle">chaude</text>
+
+    <path class="bx" d="M180 191 L180 219 L210 205 z"/>
+    <path class="bx" d="M240 191 L240 219 L210 205 z"/>
+    <text class="nm" x="210" y="235" text-anchor="middle">Détendeur</text>
+    <text class="lb" x="210" y="247" text-anchor="middle">vanne · h₄ = h₃</text>
+
+    <text class="st" x="97" y="88" text-anchor="end">1</text>
+    <text class="st" x="324" y="88">2</text>
+    <text class="st" x="324" y="199">3</text>
+    <text class="st" x="97" y="199" text-anchor="end">4</text>
   </svg>`
 };
 
