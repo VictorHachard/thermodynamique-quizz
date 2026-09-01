@@ -6,6 +6,7 @@ préliminaires du cours de mécanique et thermodynamique.
 - **QCM** : 8 propositions par question, mélangées à chaque tirage.
 - **Réponse libre** : mode flashcard, tu écris puis tu compares à la correction.
 - L'ordre des questions **et** celui des propositions changent à chaque partie.
+- **Fiche de révision** : les 34 questions/réponses sur une seule page, réponses masquables.
 - Écran de résultat avec la liste des questions ratées et la bonne réponse.
 - Bouton « refaire seulement les ratées ».
 

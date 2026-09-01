@@ -69,6 +69,17 @@
   .fail .q{font-weight:600;margin-bottom:8px}
   .fail .yours{color:var(--ko);font-size:14px}
   .fail .right{color:var(--ok);font-size:14px;margin-top:4px}
+  /* fiche de révision */
+  .mini{padding:5px 11px;font-size:13px}
+  .grp{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);
+       margin:24px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .grp:first-child{margin-top:6px}
+  .qa{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+      padding:14px 16px;margin-bottom:9px;display:flex;gap:13px;align-items:flex-start}
+  .qa .n{flex:0 0 26px;color:var(--dim);font-size:13px;font-variant-numeric:tabular-nums;padding-top:2px}
+  .qa .q{font-weight:600;margin-bottom:7px}
+  .qa .a{color:#9fe0ae;border-left:2px solid var(--ok);padding-left:11px}
+  #sheet.noans .qa .a{display:none}
   .hidden{display:none}
 </style>
 </head>
@@ -85,8 +96,10 @@
           <span><b>QCM — 8 propositions</b><small>8 réponses proposées, mélangées à chaque fois.</small></span></label>
         <label class="mode"><input type="radio" name="mode" value="libre">
           <span><b>Réponse libre (flashcard)</b><small>Tu écris ta réponse, tu la compares à la correction, tu t'auto-évalues.</small></span></label>
+        <label class="mode"><input type="radio" name="mode" value="fiche">
+          <span><b>Fiche de révision</b><small>Les 34 questions et leurs réponses sur une seule page, pour lire avant de te tester.</small></span></label>
       </div>
-      <label class="mode" style="margin-bottom:18px">
+      <label class="mode" id="shortWrap" style="margin-bottom:18px">
         <input type="checkbox" id="short">
         <span><b>Partie courte</b><small>15 questions au hasard au lieu des 34.</small></span></label>
       <div><button class="primary" id="start">Commencer</button></div>
@@ -127,6 +140,16 @@
     <div id="fails"></div>
   </section>
 
+  <!-- FICHE DE RÉVISION -->
+  <section id="sheet" class="hidden">
+    <div class="top">
+      <span>Fiche de révision — 34 questions</span>
+      <span><button id="toggleA" class="mini">Masquer les réponses</button>
+            <button id="backSheet" class="mini">Menu</button></span>
+    </div>
+    <div id="sheetBody"></div>
+  </section>
+
 </div>
 
 <script src="questions.js"></script>
@@ -157,8 +180,43 @@ function buildOptions(q) {
   return shuffle([q.a].concat(shuffle(pool.slice(0, 14)).slice(0, 7)));
 }
 
+/* --- Fiche de révision : tout sur une page, dans l'ordre du cours --- */
+const GROUPS = {
+  unites:   "Unités & constantes",
+  signes:   "Conventions de signe",
+  formules: "Formules",
+  transfo:  "Transformations",
+  cycles:   "Cycles & machines"
+};
+
+function showSheet() {
+  $("home").classList.add("hidden");
+  $("sheet").classList.remove("hidden");
+  const box = $("sheetBody");
+  box.innerHTML = "";
+  Object.keys(GROUPS).forEach(cat => {
+    const list = QUESTIONS.filter(q => q.c === cat);
+    if (!list.length) return;
+    const h = document.createElement("div");
+    h.className = "grp";
+    h.textContent = GROUPS[cat] + " — " + list.length;
+    box.appendChild(h);
+    list.forEach(q => {
+      const d = document.createElement("div");
+      d.className = "qa";
+      d.innerHTML = '<div class="n"></div><div style="flex:1"><div class="q"></div><div class="a"></div></div>';
+      d.children[0].textContent = (QUESTIONS.indexOf(q) + 1) + ".";
+      d.children[1].children[0].textContent = q.q;
+      d.children[1].children[1].textContent = q.a;
+      box.appendChild(d);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
 function start(list) {
   mode = document.querySelector('input[name=mode]:checked').value;
+  if (mode === "fiche") { showSheet(); return; }
   deck = shuffle(list);
   if ($("short").checked && deck.length > 15) deck = deck.slice(0, 15);
   idx = 0; score = 0; fails = [];
@@ -280,11 +338,20 @@ $("start").onclick = () => start(QUESTIONS);
 $("again").onclick = () => start(QUESTIONS);
 $("retry").onclick = () => { const l = fails.map(f => f.q); $("short").checked = false; start(l); };
 $("menu").onclick = () => { $("res").classList.add("hidden"); $("home").classList.remove("hidden"); };
-document.querySelectorAll('.mode input[name=mode]').forEach(r => r.onchange = () =>
+$("backSheet").onclick = () => { $("sheet").classList.add("hidden"); $("home").classList.remove("hidden"); };
+$("toggleA").onclick = () => {
+  const off = $("sheet").classList.toggle("noans");
+  $("toggleA").textContent = off ? "Afficher les réponses" : "Masquer les réponses";
+};
+document.querySelectorAll('.mode input[name=mode]').forEach(r => r.onchange = () => {
   document.querySelectorAll('label.mode').forEach(l => {
     const i = l.querySelector('input[name=mode]');
     if (i) l.classList.toggle("sel", i.checked);
-  }));
+  });
+  const fiche = r.value === "fiche" && r.checked;
+  $("shortWrap").classList.toggle("hidden", fiche);
+  $("start").textContent = fiche ? "Ouvrir la fiche" : "Commencer";
+});
 
 document.addEventListener("keydown", e => {
   if (!$("quiz").classList.contains("hidden")) {
