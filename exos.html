@@ -299,31 +299,30 @@
 
       <div class="lbl">Ce que tu tapes</div>
       <table class="io">
-        <tr><td>1 ou 2 : <span class="skip">essence / diesel</span></td><td>1</td></tr>
-        <tr><td>1 ou 2 : <span class="skip">4 temps / 2 temps</span></td><td>1</td></tr>
+        <tr><td>1=ess 2=die :</td><td>1</td></tr>
+        <tr><td>1=4T 2=2T :</td><td>1</td></tr>
         <tr><td>eps=</td><td>9</td></tr>
         <tr><td>gamma=</td><td>1.4</td></tr>
         <tr><td>Tadm=</td><td>25</td></tr>
         <tr><td>padm=</td><td>1</td></tr>
         <tr><td>cyl=</td><td>0.5 <span class="skip">cylindrée TOTALE en L — 500 cm³ = 0,5 L</span></td></tr>
         <tr><td>nbcyl=</td><td>1</td></tr>
+        <tr><td>1=oui vide=non : <span class="skip">faire la combustion ?</span></td><td class="skip">EXE — B1 est fini</td></tr>
       </table>
 
       <div class="lbl">Ce que tu lis</div>
       <ul class="read">
         <li><span class="q">a)</span><span><out>VA cm3 = 62.5</out> et <out>VB cm3 = 562.5</out></span></li>
-        <li><span class="q">b)</span><span><out>n mol = 0.02</out> — <b>arrondi, ne recopie pas ça</b>,
-          voir l'encadré rouge</span></li>
+        <li><span class="q">b)</span><span><out>n mol = 0.02269</out></span></li>
         <li><span class="q">c)</span><span><out>TC K = 718.01</out> et <out>pC bar = 21.67</out></span></li>
         <li><span class="q">d)</span><span><out>eta th % = 58.48</out> → <b>η<sub>th</sub> = 58,5 %</b></span></li>
       </ul>
 
-      <div class="bug"><b>Piège : n s'affiche arrondi à 2 décimales</b>
-        MOTEUR.py arrondit tous ses affichages à 2 décimales, donc n = 0,02269 mol devient
-        <code>0.02</code>. Si l'énoncé demande n, calcule-le directement :
+      <div class="bug"><b>B1 s'arrête après les points du cycle</b>
+        Après <out>eta th %</out> le script demande <out>faire la combustion (D, E, W, Q) ?</out> :
+        laisse vide et valide, tu tombes direct sur <out>=== FIN ===</out>. Pour vérifier n à la main :
         n = p<sub>B</sub>·V<sub>B</sub>/(R·T<sub>B</sub>) = 10⁵ × 562,5·10⁻⁶ / (8,314 × 298,15) =
-        <b>0,02269 mol</b>. Toutes les autres sorties du script sont justes, c'est seulement
-        l'affichage de n qui est trop court.</div>
+        <b>0,02269 mol</b>.</div>
     </div>
   </article>
 
@@ -340,6 +339,7 @@
 
       <div class="lbl">Ce que tu tapes — ne relance pas, continue B1</div>
       <table class="io">
+        <tr><td>1=oui vide=non : <span class="skip">faire la combustion ?</span></td><td>1</td></tr>
         <tr><td>QCD=</td><td class="skip">EXE — on ne l'a pas, le script va le calculer</td></tr>
         <tr><td>PCI=</td><td>43500</td></tr>
         <tr><td>x=</td><td>1</td></tr>
@@ -384,8 +384,10 @@
         <tr><td>tout comme en B1–B2, sauf :</td><td></td></tr>
         <tr><td>cyl=</td><td>2 <span class="skip">4 × 0,5 L</span></td></tr>
         <tr><td>nbcyl=</td><td>4</td></tr>
+        <tr><td>1=oui vide=non : <span class="skip">rendements reels ?</span></td><td>1</td></tr>
         <tr><td>ef=</td><td>0.72</td></tr>
         <tr><td>em=</td><td>0.85</td></tr>
+        <tr><td>1=oui vide=non : <span class="skip">puissance ?</span></td><td>1</td></tr>
         <tr><td>N=</td><td>4500</td></tr>
       </table>
 
@@ -432,7 +434,7 @@
       <ul class="read">
         <li><span class="q">a)</span><span><b>h₄ = h₃ = 252</b> (détente isenthalpique — le script le
           sait, il ne le demande pas). Puis <out>w = 34.0</out> · <out>q1 = -178.0</out> ·
-          <out>q2 = 144.0</out> · <out>somme (verif=0) = 0.0</out> ✓</span></li>
+          <out>q2 = 144.0</out> · <out>verif somme = 0.0</out> ✓</span></li>
         <li><span class="q">b)</span><span><out>PSN = 4.235</out> → <b>PSN = 4,24</b></span></li>
         <li><span class="q">c)</span><span><out>mdot kg/s = 0.056</out> → <b>0,0556 kg/s</b>
           (c'est l'évaporateur qui produit les 8 kW)</span></li>
@@ -473,7 +475,7 @@
       <ul class="read">
         <li><span class="q">a)</span><span><out>h2 calcule = 446.222</out> → <b>h₂ = 446,2 kJ/kg</b></span></li>
         <li><span class="q">b)</span><span><out>w = 47.222</out> · <out>q1 = -186.222</out> ·
-          <out>q2 = 139.0</out> · <out>somme (verif=0) = 0.0</out> ✓</span></li>
+          <out>q2 = 139.0</out> · <out>verif somme = 0.0</out> ✓</span></li>
         <li><span class="q">c)</span><span><out>COP = 3.944</out> → <b>COP = 3,94</b></span></li>
         <li><span class="q">d)</span><span><out>COPmax = 6.061</out> → <b>6,06</b>.
           3,94 &lt; 6,06, soit 65 % du maximum : crédible pour une machine réelle avec un
@@ -519,7 +521,7 @@
         <li><span class="q">d)</span><span><out>mdot2 kg/s = 0.512</out> → <b>0,512 kg/s</b>.
           Pour les m³/h : THERM.py, choix <code>4</code>, puis <code>P= 15</code>,
           <code>mdot= EXE</code>, <code>c= 4185</code>, <code>dT= 7</code> →
-          <out>mdot m3/h eau = 1.843</out> → <b>1,84 m³/h</b></span></li>
+          <out>mdot m3/h = 1.843</out> → <b>1,84 m³/h</b></span></li>
       </ul>
 
       <div class="note"><b>La phrase qui vaut le point de c)</b>
@@ -549,20 +551,20 @@
         <tr><td>cp= / gamma= / debit=</td><td>1004 / 1.4 / 35</td></tr>
         <tr><td>T1= / p1=</td><td>15 / 1</td></tr>
         <tr><td class="step" colspan="2">1‑2 compresseur</td></tr>
-        <tr><td>1=adia 2=isob 3=fin :</td><td>1</td></tr>
+        <tr><td>1=ad 2=iso 3=fin :</td><td>1</td></tr>
         <tr><td>1=rapp p 2=W :</td><td>1 <span class="skip">(on connaît la pression finale)</span></td></tr>
         <tr><td>pfin=</td><td>4.1 &nbsp;→ <b>note le <code>w J/kg = 143643.11</code> affiché</b></td></tr>
         <tr><td class="step" colspan="2">2‑3 chambre de combustion</td></tr>
-        <tr><td>1=adia 2=isob 3=fin : / Tfin=</td><td>2 / 750</td></tr>
+        <tr><td>1=ad 2=iso 3=fin : / Tfin=</td><td>2 / 750</td></tr>
         <tr><td class="step" colspan="2">3‑4 turbine 1 — elle entraîne le compresseur</td></tr>
-        <tr><td>1=adia 2=isob 3=fin :</td><td>1</td></tr>
+        <tr><td>1=ad 2=iso 3=fin :</td><td>1</td></tr>
         <tr><td>1=rapp p 2=W :</td><td>2 <span class="skip">(travail imposé)</span></td></tr>
         <tr><td>w=</td><td>-143643.11 <span class="skip">le w du compresseur, changé de signe</span></td></tr>
         <tr><td class="step" colspan="2">4‑5 réchauffe · 5‑6 turbine 2 · 6‑1 refroidisseur</td></tr>
-        <tr><td>1=adia 2=isob 3=fin : / Tfin=</td><td>2 / 700</td></tr>
-        <tr><td>1=adia … / 1=rapp p … / pfin=</td><td>1 / 1 / 1</td></tr>
-        <tr><td>1=adia 2=isob 3=fin : / Tfin=</td><td>2 / 15</td></tr>
-        <tr><td>1=adia 2=isob 3=fin :</td><td>3 <span class="skip">(fin)</span></td></tr>
+        <tr><td>1=ad 2=iso 3=fin : / Tfin=</td><td>2 / 700</td></tr>
+        <tr><td>1=ad … / 1=rapp p … / pfin=</td><td>1 / 1 / 1</td></tr>
+        <tr><td>1=ad 2=iso 3=fin : / Tfin=</td><td>2 / 15</td></tr>
+        <tr><td>1=ad 2=iso 3=fin :</td><td>3 <span class="skip">(fin)</span></td></tr>
       </table>
 
       <div class="lbl">Ce que tu lis</div>
@@ -598,13 +600,16 @@
 
       <div class="lbl">Ce que tu tapes</div>
       <table class="io">
-        <tr><td>1 ou 2 : / 1 ou 2 :</td><td>1 <span class="skip">essence</span> / 1 <span class="skip">4 temps</span></td></tr>
+        <tr><td>1=ess 2=die : / 1=4T 2=2T :</td><td>1 / 1</td></tr>
         <tr><td>eps= / gamma=</td><td>10 / 1.4</td></tr>
         <tr><td>Tadm= / padm=</td><td>16 / 1</td></tr>
         <tr><td>cyl= / nbcyl=</td><td>1.2 / 4</td></tr>
+        <tr><td>1=oui vide=non : <span class="skip">faire la combustion ?</span></td><td>1</td></tr>
         <tr><td>QCD=</td><td class="skip">EXE — on passe par le carburant</td></tr>
         <tr><td>PCI= / x= / y= / lambda=</td><td>42500 / 1 / 1.8 / 1.2</td></tr>
+        <tr><td>1=oui vide=non : <span class="skip">rendements reels ?</span></td><td>1</td></tr>
         <tr><td>ef= / em=</td><td>0.75 / 0.8</td></tr>
+        <tr><td>1=oui vide=non : <span class="skip">puissance ?</span></td><td>1</td></tr>
         <tr><td>N=</td><td class="skip">EXE — c'est l'inconnue</td></tr>
         <tr><td>Peff=</td><td>20</td></tr>
       </table>
@@ -707,7 +712,7 @@
         <tr><td>Putile=</td><td class="skip">EXE, sauf si l'énoncé donne une puissance</td></tr>
       </table>
       <p class="enonce" style="margin:10px 0 0">Tu lis alors <out>q2</out>, <out>w</out>, la
-        <out>somme (verif=0)</out> et surtout <out>PSN</out>. Si le compresseur n'est pas idéal,
+        <out>verif somme</out> et surtout <out>PSN</out>. Si le compresseur n'est pas idéal,
         laisse <code>h2=</code> vide : le script demande <code>h2s=</code> et <code>eis=</code> et
         calcule h₂ lui-même.</p>
 
@@ -828,8 +833,9 @@
     <ul class="read">
       <li><span class="q">1</span><span><b>Cylindrée = totale.</b> MOTEUR.py demande la cylindrée de
         tout le moteur et divise lui-même par le nombre de cylindres. 4 × 0,5 L → tape 2 et 4.</span></li>
-      <li><span class="q">2</span><span><b>n est arrondi à 0,02</b> dans MOTEUR.py. Recalcule-le si
-        l'énoncé le demande (B1 b).</span></li>
+      <li><span class="q">2</span><span><b>MOTEUR.py se coupe en étapes.</b> À chaque
+        <out>1=oui vide=non</out> tu peux t'arrêter : B1 s'arrête après le rendement théorique,
+        B2 continue sur la combustion.</span></li>
       <li><span class="q">3</span><span><b>TRANSFO.py : une seule case vide</b> parmi p1/V1/T1/n à
         l'état 1, et seulement la donnée connue à l'état 2.</span></li>
       <li><span class="q">4</span><span><b>Le rendement d'un cycle est à faire à la main</b> :

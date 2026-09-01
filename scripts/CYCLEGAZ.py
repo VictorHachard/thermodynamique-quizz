@@ -1,33 +1,64 @@
-# CYCLE GAZ / TURBINE  (Casio)
-# machines ouvertes enchainees
+# CYCLE GAZ / TURBINE (Casio)
+# machines ouvertes
 # Joule, turbine a gaz...
-# LAISSER VIDE = passer
+# (vide = passer) : tu peux
+# laisser vide, sinon la
+# question est reposee
 
 def d(t):
-    s = input(t)
-    if s == "":
-        return None
-    return float(s)
+    while True:
+        s = input(t)
+        if s == "":
+            return None
+        try:
+            return float(s)
+        except:
+            print("nombre invalide")
+
+def dr(t):
+    while True:
+        v = d(t)
+        if v is not None:
+            return v
+        print("obligatoire")
 
 def q(expl, tag):
     print(expl)
+    print("(vide = passer)")
     return d(tag)
+
+def qr(expl, tag):
+    print(expl)
+    return dr(tag)
+
+def ch(t, n):
+    while True:
+        s = input(t)
+        if len(s) == 1 and s >= "1" and s <= str(n):
+            return s
+        print("reponds 1 a " + str(n))
 
 def p(n, v):
     print(n + " = " + str(round(v, 2)))
 
-print("=== CYCLE GAZ / TURBINE ===")
-print("machines ouvertes enchainees")
+print("=== CYCLE GAZ ===")
+print("machines ouvertes")
+print("enchainees")
 
 print("")
 print("--- DONNEES GAZ ---")
-cp = q("capacite thermique cp J/kgK", "cp= ")
-g = q("gamma", "gamma= ")
-md = q("debit kg/s si connu", "debit= ")
+cp = qr("cp du gaz J/kgK", "cp= ")
+print("gamma")
+print("vide = 1.4 (air)")
+g = d("gamma= ")
+if g is None:
+    g = 1.4
+    print("gamma pris = 1.4")
+md = q("debit kg/s", "debit= ")
 if md is None:
     md = 0.0
-t = q("temperature depart T1 C", "T1= ") + 273.15
-pr = q("pression depart p1 bar/atm", "p1= ")
+t = qr("T depart T1 en C", "T1= ") + 273.15
+pr = qr("p depart p1 (bar)", "p1= ")
 
 wt = 0.0
 qi = 0.0
@@ -40,26 +71,26 @@ p("p", pr)
 
 while True:
     print("")
-    print("--- ETAPE SUIVANTE ---")
-    print("adiabatique, isobare ou fin ?")
-    c = input("1=adia 2=isob 3=fin : ")
+    print("--- ETAPE ---")
+    print("adia, isob ou fin ?")
+    c = ch("1=ad 2=iso 3=fin : ", 3)
     if c == "3":
         break
     if c == "1":
-        print("rapport de pression ou W impose ?")
-        s = input("1=rapp p 2=W : ")
+        print("rapport p ou W ?")
+        s = ch("1=rapp p 2=W : ", 2)
         if s == "1":
-            p2 = q("pression finale", "pfin= ")
+            p2 = qr("pression finale", "pfin= ")
             t2 = t * (p2 / pr) ** ((g - 1) / g)
         else:
-            w = q("travail w en J/kg", "w= ")
+            w = qr("travail w en J/kg", "w= ")
             t2 = t + w / cp
             p2 = pr * (t2 / t) ** (g / (g - 1))
         w = cp * (t2 - t)
         wt = wt + w
         p("w J/kg", w)
     else:
-        t2 = q("temperature finale C", "Tfin= ") + 273.15
+        t2 = qr("T finale en C", "Tfin= ") + 273.15
         p2 = pr
         qe = cp * (t2 - t)
         qt = qt + qe

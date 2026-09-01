@@ -1,30 +1,57 @@
 # FRIGO / PAC  (Casio)
-# LAISSER VIDE = passer
+# (vide = passer) : tu peux
+# laisser vide, sinon la
+# question est reposee
 
 def d(t):
-    s = input(t)
-    if s == "":
-        return None
-    return float(s)
+    while True:
+        s = input(t)
+        if s == "":
+            return None
+        try:
+            return float(s)
+        except:
+            print("nombre invalide")
+
+def dr(t):
+    while True:
+        v = d(t)
+        if v is not None:
+            return v
+        print("obligatoire")
 
 def q(expl, tag):
     print(expl)
+    print("(vide = passer)")
     return d(tag)
+
+def qr(expl, tag):
+    print(expl)
+    return dr(tag)
+
+def ch(t, n):
+    while True:
+        s = input(t)
+        if len(s) == 1 and s >= "1" and s <= str(n):
+            return s
+        print("reponds 1 a " + str(n))
 
 def p(n, v):
     print(n + " = " + str(round(v, 3)))
 
 print("=== FRIGO / PAC ===")
-print("enthalpies h en kJ/kg")
+print("h en kJ/kg")
 
 print("")
-print("--- LES 4 POINTS (h) ---")
-h1 = q("h1 sortie evaporateur", "h1= ")
-h3 = q("h3 sortie condenseur", "h3= ")
-h2 = q("h2 reel sortie compress", "h2= ")
+print("--- LES 4 POINTS ---")
+h1 = qr("h1 sortie evapo", "h1= ")
+h3 = qr("h3 sortie condens", "h3= ")
+h2 = q("h2 reel sortie comp", "h2= ")
 if h2 is None:
-    h2s = q("h2 isentropique", "h2s= ")
-    ei = q("rendement isentropique", "eis= ")
+    print("h2 vide -> on passe")
+    print("par l isentropique")
+    h2s = qr("h2 isentropique", "h2s= ")
+    ei = qr("rend. isentro 0-1", "eis= ")
     h2 = h1 + (h2s - h1) / ei
     p("h2 calcule", h2)
 h4 = h3
@@ -34,45 +61,62 @@ q1 = h3 - h2
 q2 = h1 - h4
 
 print("")
-print("--- PAR KG DE FLUIDE ---")
+print("--- PAR KG FLUIDE ---")
 p("w", w)
 p("q1", q1)
 p("q2", q2)
-p("somme (verif=0)", q1 + q2 + w)
-p("PSN", q2 / w)
-p("COP", -q1 / w)
+p("verif somme", q1 + q2 + w)
+if w != 0:
+    p("PSN", q2 / w)
+    p("COP", -q1 / w)
+else:
+    print("w = 0 : PSN et COP")
+    print("impossibles")
 
 print("")
-print("--- CARNOT (bornes theoriques) ---")
-tf = q("temperature froide C si connue", "Tfroid= ")
+print("--- CARNOT ---")
+print("bornes theoriques")
+tf = q("T froide en C", "Tfroid= ")
 if tf is not None:
-    tc = q("temperature chaude C", "Tchaud= ")
+    tc = qr("T chaude en C", "Tchaud= ")
     t2 = tf + 273.15
     t1 = tc + 273.15
-    p("PSNmax", t2 / (t1 - t2))
-    p("COPmax", t1 / (t1 - t2))
+    if t1 != t2:
+        p("PSNmax", t2 / (t1 - t2))
+        p("COPmax", t1 / (t1 - t2))
+    else:
+        print("Tchaud = Tfroid :")
+        print("Carnot impossible")
 
 print("")
 print("--- DEBITS ---")
-pu = q("puissance utile Putile kW", "Putile= ")
+pu = q("P utile en kW", "Putile= ")
 if pu is not None:
     print("frigo ou PAC ?")
-    m = input("1=frigo 2=pac : ")
+    m = ch("1=frigo 2=pac : ", 2)
     if m == "1":
         qu = q2
     else:
         qu = -q1
-    md = pu / qu
-    p("mdot kg/s", md)
-    p("Pcomp kW", md * w)
-    if m == "1":
-        p("Pcond kW", pu + md * w)
+    if qu == 0:
+        print("q utile = 0 :")
+        print("debit impossible")
     else:
-        p("Pevap kW", pu - md * w)
-    ce = q("c du secondaire J/kgK si connu", "csec= ")
-    if ce is not None:
-        dt = q("delta T secondaire C", "dT= ")
-        p("mdot2 kg/s", pu * 1000 / (ce * dt))
+        md = pu / qu
+        p("mdot kg/s", md)
+        p("Pcomp kW", md * w)
+        if m == "1":
+            p("Pcond kW", pu + md * w)
+        else:
+            p("Pevap kW", pu - md * w)
+        ce = q("c secondaire J/kgK", "csec= ")
+        if ce is not None:
+            dt = qr("delta T secondaire", "dT= ")
+            if ce * dt != 0:
+                p("mdot2 kg/s", pu * 1000 / (ce * dt))
+            else:
+                print("c ou dT = 0 :")
+                print("mdot2 impossible")
 
 print("")
 print("=== FIN ===")

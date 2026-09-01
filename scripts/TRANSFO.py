@@ -1,39 +1,80 @@
 # TRANSFO GAZ PARFAIT (Casio)
-# systeme ferme, 1 transformation : p,V,T,W,Q
-# LAISSER VIDE = inconnu
+# systeme ferme, 1 transfo
+# ici vide = inconnu :
+# le script le calcule
+# etat 1 : une seule case
+# vide parmi p1, V1, T1, n
 
 from math import log
 
 R = 8.314
 
 def d(t):
-    s = input(t)
-    if s == "":
-        return None
-    return float(s)
+    while True:
+        s = input(t)
+        if s == "":
+            return None
+        try:
+            return float(s)
+        except:
+            print("nombre invalide")
 
 def q(expl, tag):
     print(expl)
+    print("(vide = inconnu)")
     return d(tag)
+
+def ch(t, n):
+    while True:
+        s = input(t)
+        if len(s) == 1 and s >= "1" and s <= str(n):
+            return s
+        print("reponds 1 a " + str(n))
+
+def nb(a, b, c, e):
+    k = 0
+    if a is None:
+        k = k + 1
+    if b is None:
+        k = k + 1
+    if c is None:
+        k = k + 1
+    if e is None:
+        k = k + 1
+    return k
 
 def p(n, v):
     print(n + " = " + str(round(v, 3)))
 
-print("=== TRANSFO GAZ PARFAIT ===")
-print("systeme ferme, 1 seule transfo")
+print("=== TRANSFO GP ===")
+print("systeme ferme")
+print("1 seule transfo")
 
 print("")
 print("--- GAZ ---")
-g = q("gamma (Cp/Cv)", "gamma= ")
+print("gamma Cp/Cv")
+print("vide = 1.4 (air)")
+g = d("gamma= ")
+if g is None:
+    g = 1.4
+    print("gamma pris = 1.4")
 cv = R / (g - 1)
 cp = g * cv
 
 print("")
-print("--- ETAT 1 (vide=inconnu) ---")
-p1 = q("pression p1 bar", "p1= ")
-v1 = q("volume V1 L", "V1= ")
-t1 = q("temperature T1 C", "T1= ")
-nn = q("nombre de moles n si connu", "n= ")
+print("--- ETAT 1 ---")
+print("une seule case vide")
+print("sur les quatre")
+while True:
+    p1 = q("pression p1 bar", "p1= ")
+    v1 = q("volume V1 L", "V1= ")
+    t1 = q("temperature T1 C", "T1= ")
+    nn = q("nombre de moles n", "n= ")
+    if nb(p1, v1, t1, nn) <= 1:
+        break
+    print("trop de cases vides")
+    print("il en faut une seule")
+
 if p1 is not None:
     p1 = p1 * 100000
 if v1 is not None:
@@ -56,16 +97,38 @@ p("V1 L", v1 * 1000)
 p("T1 K", t1)
 
 print("")
-print("--- TYPE DE TRANSFORMATION ---")
+print("--- TYPE TRANSFO ---")
 print("1=isobare 2=isochore")
-print("3=isotherme 4=adiabatique")
-ty = input("1, 2, 3 ou 4 : ")
+print("3=isotherme 4=adiab")
+ty = ch("1, 2, 3 ou 4 : ", 4)
 
 print("")
-print("--- ETAT 2 (vide=inconnu) ---")
-p2 = q("pression p2 bar", "p2= ")
-v2 = q("volume V2 L", "V2= ")
-t2 = q("temperature T2 C", "T2= ")
+print("--- ETAT 2 ---")
+if ty == "1":
+    print("isobare : V2 ou T2")
+elif ty == "2":
+    print("isochore : p2 ou T2")
+elif ty == "3":
+    print("isotherme : V2 ou p2")
+else:
+    print("adiab : V2, p2 ou T2")
+
+while True:
+    p2 = q("pression p2 bar", "p2= ")
+    v2 = q("volume V2 L", "V2= ")
+    t2 = q("temperature T2 C", "T2= ")
+    if ty == "1":
+        ok = v2 is not None or t2 is not None
+    elif ty == "2":
+        ok = p2 is not None or t2 is not None
+    elif ty == "3":
+        ok = v2 is not None or p2 is not None
+    else:
+        ok = v2 is not None or p2 is not None or t2 is not None
+    if ok:
+        break
+    print("pas assez de donnees")
+
 if p2 is not None:
     p2 = p2 * 100000
 if v2 is not None:
@@ -107,7 +170,7 @@ p("V2 L", v2 * 1000)
 p("T2 K", t2)
 
 print("")
-print("--- TRAVAIL ET CHALEUR ---")
+print("--- W et Q ---")
 du = nn * cv * (t2 - t1)
 dh = nn * cp * (t2 - t1)
 if ty == "1":
