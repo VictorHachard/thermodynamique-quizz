@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz Thermodynamique</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232d; --line:#2a323d;
+    --txt:#e6edf3; --dim:#96a3b3; --acc:#4f8cff; --ok:#2ea043; --ko:#e5534b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font:16px/1.55 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       -webkit-text-size-adjust:100%}
+  .wrap{max-width:820px;margin:0 auto;padding:20px 16px 64px}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--dim);font-size:14px;margin:0 0 22px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+  button{font:inherit;cursor:pointer;border-radius:9px;border:1px solid var(--line);
+         background:var(--panel2);color:var(--txt);padding:10px 16px;transition:.12s}
+  button:hover{border-color:var(--acc)}
+  .primary{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+  .primary:hover{filter:brightness(1.1)}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  /* accueil */
+  .modes{display:grid;gap:10px;margin:18px 0}
+  .mode{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--line);
+        border-radius:10px;background:var(--panel2);cursor:pointer}
+  .mode.sel{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
+  .mode b{display:block}
+  .mode small{color:var(--dim)}
+  .mode input{margin-top:4px;accent-color:var(--acc)}
+  /* progression */
+  .top{display:flex;justify-content:space-between;align-items:center;
+       font-size:13px;color:var(--dim);margin-bottom:8px}
+  .bar{height:6px;background:var(--panel2);border-radius:99px;overflow:hidden;margin-bottom:22px}
+  .bar>div{height:100%;background:var(--acc);width:0;transition:width .25s}
+  .qtxt{font-size:19px;font-weight:600;margin:0 0 18px;line-height:1.45}
+  /* QCM */
+  .opts{display:grid;gap:8px}
+  .opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:12px 14px;line-height:1.45}
+  .opt .k{flex:0 0 22px;height:22px;border-radius:5px;background:#0e1116;border:1px solid var(--line);
+          color:var(--dim);font-size:12px;display:grid;place-items:center;font-weight:600}
+  .opt.good{border-color:var(--ok);background:rgba(46,160,67,.14)}
+  .opt.good .k{border-color:var(--ok);color:var(--ok)}
+  .opt.bad{border-color:var(--ko);background:rgba(229,83,75,.14)}
+  .opt.bad .k{border-color:var(--ko);color:var(--ko)}
+  .opt[disabled]{cursor:default;opacity:.7}
+  .opt.good[disabled],.opt.bad[disabled]{opacity:1}
+  /* réponse libre */
+  textarea{width:100%;min-height:90px;background:var(--panel2);color:var(--txt);
+           border:1px solid var(--line);border-radius:9px;padding:12px;font:inherit;resize:vertical}
+  textarea:focus{outline:none;border-color:var(--acc)}
+  .reveal{margin-top:16px;padding:14px;border-radius:9px;background:rgba(79,140,255,.1);
+          border:1px solid var(--acc)}
+  .reveal .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-bottom:4px}
+  .fb{margin-top:16px;font-size:15px}
+  .fb b.ok{color:var(--ok)} .fb b.ko{color:var(--ko)}
+  .actions{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .hint{color:var(--dim);font-size:12.5px}
+  /* résultats */
+  .score{font-size:46px;font-weight:700;margin:6px 0 0}
+  .score small{font-size:18px;color:var(--dim);font-weight:400}
+  .verdict{color:var(--dim);margin:2px 0 20px}
+  h2{font-size:16px;margin:26px 0 10px}
+  .fail{border:1px solid var(--line);border-left:3px solid var(--ko);border-radius:9px;
+        padding:13px 15px;margin-bottom:10px;background:var(--panel2)}
+  .fail .q{font-weight:600;margin-bottom:8px}
+  .fail .yours{color:var(--ko);font-size:14px}
+  .fail .right{color:var(--ok);font-size:14px;margin-top:4px}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ACCUEIL -->
+  <section id="home">
+    <h1>Quiz — Mécanique &amp; Thermodynamique</h1>
+    <p class="sub">34 questions préliminaires, tirées dans un ordre différent à chaque partie.</p>
+    <div class="card">
+      <div class="modes">
+        <label class="mode sel"><input type="radio" name="mode" value="qcm" checked>
+          <span><b>QCM — 8 propositions</b><small>8 réponses proposées, mélangées à chaque fois.</small></span></label>
+        <label class="mode"><input type="radio" name="mode" value="libre">
+          <span><b>Réponse libre (flashcard)</b><small>Tu écris ta réponse, tu la compares à la correction, tu t'auto-évalues.</small></span></label>
+      </div>
+      <label class="mode" style="margin-bottom:18px">
+        <input type="checkbox" id="short">
+        <span><b>Partie courte</b><small>15 questions au hasard au lieu des 34.</small></span></label>
+      <div><button class="primary" id="start">Commencer</button></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="hidden">
+    <div class="top"><span id="counter"></span><span id="live"></span></div>
+    <div class="bar"><div id="prog"></div></div>
+    <div class="card">
+      <p class="qtxt" id="qtxt"></p>
+      <div id="opts" class="opts"></div>
+      <div id="freebox" class="hidden">
+        <textarea id="free" placeholder="Écris ta réponse ici…"></textarea>
+        <div id="revealBox" class="reveal hidden">
+          <div class="lbl">Réponse attendue</div>
+          <div id="revealTxt"></div>
+        </div>
+      </div>
+      <div id="fb" class="fb hidden"></div>
+      <div class="actions" id="actions"></div>
+    </div>
+  </section>
+
+  <!-- RÉSULTATS -->
+  <section id="res" class="hidden">
+    <div class="card">
+      <h1>Résultat</h1>
+      <p class="score"><span id="sc"></span><small id="scOf"></small></p>
+      <p class="verdict" id="verdict"></p>
+      <div class="row">
+        <button class="primary" id="again">Rejouer (nouvel ordre)</button>
+        <button id="retry">Refaire seulement les ratées</button>
+        <button id="menu">Menu</button>
+      </div>
+    </div>
+    <div id="fails"></div>
+  </section>
+
+</div>
+
+<script src="questions.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; }
+  return a; };
+
+let deck = [], idx = 0, score = 0, fails = [], mode = "qcm", answered = false, cur = null;
+
+/* 8 propositions : la bonne + 7 leurres.
+   On privilégie la même catégorie, puis une longueur voisine de la bonne réponse
+   (sinon la plus longue proposition trahirait la solution), et on garde de
+   l'aléatoire en tirant 7 leurres parmi les 14 meilleurs candidats. */
+function buildOptions(q) {
+  const same = [], other = [];
+  const seen = { [q.a]: 1 };
+  const push = (t, arr) => { if (!seen[t]) { seen[t] = 1; arr.push(t); } };
+  (DECOYS[q.c] || []).forEach(t => push(t, same));
+  QUESTIONS.filter(x => x.c === q.c).forEach(x => push(x.a, same));
+  Object.keys(DECOYS).forEach(k => DECOYS[k].forEach(t => push(t, other)));
+  QUESTIONS.forEach(x => push(x.a, other));
+
+  const near = arr => shuffle(arr)
+    .sort((x, y) => Math.abs(x.length - q.a.length) - Math.abs(y.length - q.a.length));
+  const pool = near(same).concat(near(other));
+  return shuffle([q.a].concat(shuffle(pool.slice(0, 14)).slice(0, 7)));
+}
+
+function start(list) {
+  mode = document.querySelector('input[name=mode]:checked').value;
+  deck = shuffle(list);
+  if ($("short").checked && deck.length > 15) deck = deck.slice(0, 15);
+  idx = 0; score = 0; fails = [];
+  $("home").classList.add("hidden"); $("res").classList.add("hidden");
+  $("quiz").classList.remove("hidden");
+  render();
+}
+
+function liveScore() {
+  $("live").textContent = score + (score > 1 ? " bonnes réponses" : " bonne réponse");
+}
+
+function render() {
+  cur = deck[idx]; answered = false;
+  $("counter").textContent = "Question " + (idx + 1) + " / " + deck.length;
+  liveScore();
+  $("prog").style.width = (idx / deck.length * 100) + "%";
+  $("qtxt").textContent = cur.q;
+  $("fb").className = "fb hidden"; $("fb").textContent = "";
+  $("actions").innerHTML = "";
+  $("opts").innerHTML = ""; $("opts").classList.add("hidden");
+  $("freebox").classList.add("hidden");
+  $("revealBox").classList.add("hidden");
+
+  if (mode === "qcm") {
+    $("opts").classList.remove("hidden");
+    buildOptions(cur).forEach((txt, i) => {
+      const b = document.createElement("button");
+      b.className = "opt";
+      const k = document.createElement("span"); k.className = "k"; k.textContent = i + 1;
+      const s = document.createElement("span"); s.textContent = txt;
+      b.append(k, s);
+      b.onclick = () => pick(b, txt);
+      $("opts").appendChild(b);
+    });
+    $("actions").innerHTML = '<span class="hint">Touches 1 à 8 pour répondre, Entrée pour continuer.</span>';
+  } else {
+    $("freebox").classList.remove("hidden");
+    $("free").value = ""; $("free").disabled = false; $("free").focus();
+    addBtn("Voir la réponse", reveal, true);
+    $("actions").insertAdjacentHTML("beforeend", '<span class="hint">Ctrl+Entrée pour révéler.</span>');
+  }
+}
+
+function addBtn(label, fn, primary) {
+  const b = document.createElement("button");
+  b.textContent = label; if (primary) b.className = "primary";
+  b.onclick = fn; $("actions").appendChild(b); return b;
+}
+
+/* --- QCM --- */
+function pick(btn, txt) {
+  if (answered) return;
+  answered = true;
+  const good = txt === cur.a;
+  Array.from($("opts").children).forEach(b => {
+    b.disabled = true;
+    if (b.lastChild.textContent === cur.a) b.classList.add("good");
+  });
+  if (good) score++;
+  else { btn.classList.add("bad"); fails.push({ q: cur, given: txt }); }
+  liveScore();
+  $("fb").className = "fb";
+  $("fb").innerHTML = good ? '<b class="ok">Correct</b>' : '<b class="ko">Raté</b>';
+  $("actions").innerHTML = "";
+  addBtn(idx + 1 < deck.length ? "Question suivante" : "Voir le résultat", next, true);
+}
+
+/* --- Réponse libre --- */
+function reveal() {
+  if (answered) return;
+  answered = true;
+  $("revealTxt").textContent = cur.a;
+  $("revealBox").classList.remove("hidden");
+  $("free").disabled = true;
+  $("actions").innerHTML = '<span class="hint">Tu l\'avais ?</span>';
+  addBtn("Je l'avais", () => { score++; next(); }, true);
+  addBtn("Raté", () => { fails.push({ q: cur, given: $("free").value.trim() || "(rien)" }); next(); });
+}
+
+function next() {
+  idx++;
+  if (idx < deck.length) render(); else finish();
+}
+
+function finish() {
+  $("quiz").classList.add("hidden");
+  $("res").classList.remove("hidden");
+  const pct = Math.round(score / deck.length * 100);
+  $("sc").textContent = score;
+  $("scOf").textContent = " / " + deck.length + " — " + pct + "%";
+  $("verdict").textContent =
+    pct === 100 ? "Sans faute. Le cours est acquis." :
+    pct >= 80 ? "Solide. Revois juste les points ci-dessous." :
+    pct >= 50 ? "Ça vient — repasse sur les ratées." :
+                "Il faut relire le cours, puis refaire un tour.";
+  $("retry").style.display = fails.length ? "" : "none";
+  const box = $("fails");
+  box.innerHTML = "";
+  if (fails.length) {
+    const h = document.createElement("h2");
+    h.textContent = "À revoir — " + fails.length + (fails.length > 1 ? " questions ratées" : " question ratée");
+    box.appendChild(h);
+  }
+  fails.forEach(f => {
+    const d = document.createElement("div");
+    d.className = "fail";
+    d.innerHTML = '<div class="q"></div><div class="yours"></div><div class="right"></div>';
+    d.children[0].textContent = f.q.q;
+    d.children[1].textContent = "Ta réponse : " + f.given;
+    d.children[2].textContent = "Réponse : " + f.q.a;
+    box.appendChild(d);
+  });
+  window.scrollTo(0, 0);
+}
+
+/* --- navigation --- */
+$("start").onclick = () => start(QUESTIONS);
+$("again").onclick = () => start(QUESTIONS);
+$("retry").onclick = () => { const l = fails.map(f => f.q); $("short").checked = false; start(l); };
+$("menu").onclick = () => { $("res").classList.add("hidden"); $("home").classList.remove("hidden"); };
+document.querySelectorAll('.mode input[name=mode]').forEach(r => r.onchange = () =>
+  document.querySelectorAll('label.mode').forEach(l => {
+    const i = l.querySelector('input[name=mode]');
+    if (i) l.classList.toggle("sel", i.checked);
+  }));
+
+document.addEventListener("keydown", e => {
+  if (!$("quiz").classList.contains("hidden")) {
+    if (mode === "qcm" && !answered && e.key >= "1" && e.key <= "8") {
+      const b = $("opts").children[+e.key - 1]; if (b) b.click();
+    } else if (mode === "qcm" && answered && e.key === "Enter") {
+      const b = $("actions").querySelector("button"); if (b) b.click();
+    } else if (mode === "libre" && !answered && e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+      reveal();
+    }
+  }
+});
+</script>
+</body>
+</html>
