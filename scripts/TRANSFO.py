@@ -1,5 +1,7 @@
 # TRANSFO GAZ PARFAIT (Casio)
 # systeme ferme, 1 transfo
+# les lignes indentees sont
+# les FORMULES a recopier
 # ici vide = inconnu :
 # le script le calcule
 # etat 1 : une seule case
@@ -43,6 +45,9 @@ def nb(a, b, c, e):
         k = k + 1
     return k
 
+def f(s):
+    print("  " + s)
+
 def p(n, v):
     print(n + " = " + str(round(v, 3)))
 
@@ -60,6 +65,10 @@ if g is None:
     print("gamma pris = 1.4")
 cv = R / (g - 1)
 cp = g * cv
+f("Cv = R/(g-1)")
+p("Cv J/molK", cv)
+f("Cp = g.Cv")
+p("Cp J/molK", cp)
 
 print("")
 print("--- ETAT 1 ---")
@@ -82,13 +91,19 @@ if v1 is not None:
 if t1 is not None:
     t1 = t1 + 273.15
 
+f("SI : Pa, m3, K")
+f("pV = nRT")
 if nn is None:
+    f("n = p1V1/(R.T1)")
     nn = p1 * v1 / (R * t1)
 elif p1 is None:
+    f("p1 = nRT1/V1")
     p1 = nn * R * t1 / v1
 elif v1 is None:
+    f("V1 = nRT1/p1")
     v1 = nn * R * t1 / p1
 elif t1 is None:
+    f("T1 = p1V1/(nR)")
     t1 = p1 * v1 / (nn * R)
 
 p("n mol", nn)
@@ -106,12 +121,20 @@ print("")
 print("--- ETAT 2 ---")
 if ty == "1":
     print("isobare : V2 ou T2")
+    f("p = cste")
+    f("V2/V1 = T2/T1")
 elif ty == "2":
     print("isochore : p2 ou T2")
+    f("V = cste")
+    f("p2/p1 = T2/T1")
 elif ty == "3":
     print("isotherme : V2 ou p2")
+    f("T = cste")
+    f("p1.V1 = p2.V2")
 else:
     print("adiab : V2, p2 ou T2")
+    f("p.V^g = cste")
+    f("T.V^(g-1) = cste")
 
 while True:
     p2 = q("pression p2 bar", "p2= ")
@@ -139,29 +162,43 @@ if t2 is not None:
 if ty == "1":
     p2 = p1
     if v2 is None:
+        f("V2 = V1.T2/T1")
         v2 = v1 * t2 / t1
     else:
+        f("T2 = T1.V2/V1")
         t2 = t1 * v2 / v1
 elif ty == "2":
     v2 = v1
     if p2 is None:
+        f("p2 = p1.T2/T1")
         p2 = p1 * t2 / t1
     else:
+        f("T2 = T1.p2/p1")
         t2 = t1 * p2 / p1
 elif ty == "3":
     t2 = t1
     if v2 is None:
+        f("V2 = p1V1/p2")
         v2 = p1 * v1 / p2
     else:
+        f("p2 = p1V1/V2")
         p2 = p1 * v1 / v2
 else:
     if v2 is not None:
+        f("T2=T1.(V1/V2)^(g-1)")
+        f("p2 = p1.(V1/V2)^g")
         t2 = t1 * (v1 / v2) ** (g - 1)
         p2 = p1 * (v1 / v2) ** g
     elif p2 is not None:
+        f("T2 = T1.(p2/p1)^")
+        f("   ((g-1)/g)")
+        f("V2=V1.(p1/p2)^(1/g)")
         t2 = t1 * (p2 / p1) ** ((g - 1) / g)
         v2 = v1 * (p1 / p2) ** (1 / g)
     else:
+        f("V2 = V1.(T1/T2)^")
+        f("   (1/(g-1))")
+        f("p2 = nRT2/V2")
         v2 = v1 * (t1 / t2) ** (1 / (g - 1))
         p2 = nn * R * t2 / v2
 
@@ -171,24 +208,36 @@ p("T2 K", t2)
 
 print("")
 print("--- W et Q ---")
+f("dU = n.Cv.(T2-T1)")
 du = nn * cv * (t2 - t1)
+f("dH = n.Cp.(T2-T1)")
 dh = nn * cp * (t2 - t1)
 if ty == "1":
+    f("W = -p.(V2-V1)")
+    f("Q = dH")
     w = -p1 * (v2 - v1)
     qc = dh
 elif ty == "2":
+    f("W = 0 (V constant)")
+    f("Q = dU")
     w = 0.0
     qc = du
 elif ty == "3":
+    f("dU = 0 donc Q = -W")
+    f("W = -nRT.ln(V2/V1)")
     w = -nn * R * t1 * log(v2 / v1)
     qc = -w
 else:
+    f("Q = 0 (adiabatique)")
+    f("W = dU")
     qc = 0.0
     w = du
 p("W J", w)
 p("Q J", qc)
 p("dU J", du)
 p("dH J", dh)
+f("verif dU = W + Q")
+p("W+Q", w + qc)
 
 print("")
 print("=== FIN ===")

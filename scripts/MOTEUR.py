@@ -1,6 +1,8 @@
 # MOTEUR 4T / 2T (Casio)
 # essence ou diesel
-# le script est en etapes :
+# les lignes indentees sont
+# les FORMULES a recopier
+# dans la redaction
 # a chaque "1=oui vide=non"
 # tu peux t arreter la
 # (ex : exo B1 = les points)
@@ -38,6 +40,9 @@ def go(t):
     s = input("1=oui vide=non : ")
     return s == "1"
 
+def f(s):
+    print("  " + s)
+
 def p(n, v):
     print(n + " = " + str(round(v, 2)))
 
@@ -48,9 +53,11 @@ print("essence ou diesel ?")
 ty = input("1=ess 2=die : ")
 if ty == "2":
     print("-> diesel")
+    print("combustion isobare")
 else:
     ty = "1"
     print("-> essence")
+    print("combustion isochore")
 print("4 temps ou 2 temps ?")
 tp = input("1=4T 2=2T : ")
 if tp == "2":
@@ -80,6 +87,13 @@ z = qr("nombre de cylindres", "nbcyl= ")
 cv = R / (g - 1)
 cp = g * cv
 
+print("")
+print("--- LE GAZ ---")
+f("Cv = R/(g-1)")
+p("Cv J/molK", cv)
+f("Cp = g.Cv")
+p("Cp J/molK", cp)
+
 cu = cy / z / 1000.0
 va = cu / (ep - 1)
 vb = va * ep
@@ -90,11 +104,19 @@ pc = pb * ep ** g
 
 print("")
 print("--- POINT B et C ---")
+f("cyl unit = cyl/z")
+p("cyl unit cm3", cu * 1e6)
+f("VA = cyl/(eps-1)")
 p("VA cm3", va * 1e6)
+f("VB = eps.VA")
 p("VB cm3", vb * 1e6)
-print("n mol = " + str(round(n, 5)))
+f("TB = Tadm + 273.15")
 p("TB K", tb)
+f("n = pB.VB/(R.TB)")
+print("n mol = " + str(round(n, 5)))
+f("TC = TB.eps^(g-1)")
 p("TC K", tc)
+f("pC = pB.eps^g")
 p("pC bar", pc / 100000)
 
 et = None
@@ -102,6 +124,7 @@ if ty == "1":
     et = 1 - ep ** (1 - g)
     print("")
     print("--- RENDEMENT TH ---")
+    f("eta=1-eps^(1-g)")
     p("eta th %", et * 100)
 
 print("")
@@ -119,7 +142,10 @@ if suite:
             r = q("rapport combust rho", "rho= ")
         if r is not None:
             td = tc * r
+            f("TD = rho.TC")
+            f("QCD = n.Cp.(TD-TC)")
             q1 = n * cp * (td - tc)
+            p("QCD J", q1)
         else:
             print("QCD par le carburant")
             pci = qr("PCI carbu kJ/kg", "PCI= ")
@@ -133,10 +159,19 @@ if suite:
                 print("lambda pris = 1")
             ar = la * (x + y / 4) / 0.21
             nc = n / (1 + ar)
-            mc = nc * (12 * x + y) / 1000.0
+            mm = 12 * x + y
+            mc = nc * mm / 1000.0
             q1 = mc * pci * 1000
+            f("nair/carb =")
+            f("lam.(x+y/4)/0.21")
             p("air/carb mol", ar)
+            f("M = 12x + y")
+            p("M carb g/mol", mm)
+            f("ncarb = n/(1+nair)")
+            p("ncarb mol", nc)
+            f("mcarb = ncarb.M/1e3")
             p("mcarb mg", mc * 1e6)
+            f("QCD = mcarb.PCI.1e3")
             p("QCD J", q1)
 
     if ty == "2":
@@ -144,22 +179,34 @@ if suite:
         r = td / tc
         vd = va * r
         pd = pc
+        f("TD = TC+QCD/(n.Cp)")
     else:
         td = tc + q1 / (n * cv)
         r = 1.0
         vd = va
         pd = pc * td / tc
+        f("TD = TC+QCD/(n.Cv)")
 
     p("TD K", td)
+    if ty == "2":
+        f("pD = pC (isobare)")
+    else:
+        f("pD = pC.TD/TC")
     p("pD bar", pd / 100000)
     if ty == "2":
+        f("rho = TD/TC = VD/VA")
         p("rho", r)
+        f("VD = rho.VA")
+        p("VD cm3", vd * 1e6)
 
     print("")
     print("--- POINT E ---")
     te = td * (vd / vb) ** (g - 1)
     pe = n * R * te / vb
+    f("VE = VB")
+    f("TE=TD.(VD/VB)^(g-1)")
     p("TE K", te)
+    f("pE = nRTE/VB")
     p("pE bar", pe / 100000)
 
     print("")
@@ -172,12 +219,22 @@ if suite:
         wcd = 0.0
     wde = n * cv * (te - td)
     qeb = n * cv * (tb - te)
+    f("WBC = n.Cv.(TC-TB)")
     p("W BC J", wbc)
+    if ty == "2":
+        f("WCD = -pC.(VD-VA)")
+    else:
+        f("WCD = 0 (isochore)")
     p("W CD J", wcd)
     p("Q CD J", q1)
+    f("WDE = n.Cv.(TE-TD)")
     p("W DE J", wde)
+    f("QEB = n.Cv.(TB-TE)")
     p("Q EB J", qeb)
+    f("Wtot = somme des W")
     p("W total J", wbc + wcd + wde)
+    f("verif: dU cycle = 0")
+    p("W+Q (=0 ?)", wbc + wcd + wde + q1 + qeb)
 
     if ty == "2":
         if abs(r - 1) < 1e-9:
@@ -187,7 +244,16 @@ if suite:
 
     print("")
     print("--- RENDEMENT TH ---")
+    if ty == "2":
+        f("e = eps^(1-g)")
+        f("eta = 1 + (e -")
+        f("e.rho^g)/(g(rho-1))")
+    else:
+        f("eta=1-eps^(1-g)")
     p("eta th %", et * 100)
+    f("verif |Wtot|/QCD")
+    p("verif eta %", abs(wbc + wcd + wde) / q1 * 100)
+    f("Wth = eta.QCD")
     wt = et * q1
     p("Wth J", wt)
 
@@ -208,13 +274,21 @@ if suite:
             em = 1.0
         wi = ef * wt
         wd = em * wi
+        f("Wind = ef.Wth")
         p("Windique J", wi)
+        f("Wdisp = em.Wind")
         p("Wdispo J", wd)
+        f("eta eff =")
+        f("eta.ef.em")
         p("eta eff %", et * ef * em * 100)
 
     print("")
     print("--- PUISSANCE ---")
     if go("puissance/vitesse ?"):
+        if tp == "2":
+            f("2T : P = N/60.W.z")
+        else:
+            f("4T : P = N/120.W.z")
         print("si N inconnu : vide")
         nn = q("vitesse N tr/min", "N= ")
         if nn is not None:
@@ -223,6 +297,7 @@ if suite:
         else:
             pe2 = q("Peff en kW", "Peff= ")
             if pe2 is not None and wd != 0:
+                f("N = P.kt/(Wdisp.z)")
                 p("N tr/min", abs(pe2) * 1000 * kt / (wd * z))
 
 print("")
