@@ -11,30 +11,30 @@ const QUESTIONS = [
   { c:"unites",   q:"Quel est le lien entre 1 Joule et 1 Watt ?", a:"1 W = 1 J/s" },
   { c:"signes",   q:"Quel est le signe d'une énergie entrant dans le système ?", a:"Positif" },
   { c:"signes",   q:"Quel est le signe d'une énergie sortant du système ?", a:"Négatif" },
-  { c:"formules", q:"Donnez la formule de la loi des gaz parfaits.", a:"pV = nRT" },
+  { c:"formules", q:"Donnez la formule de la loi des gaz parfaits.", a:"pV = mRT (ou nRT)" },
   { c:"unites",   q:"Que vaut R, la constante des gaz parfaits (valeur et unité) ?", a:"R = 8,314 J/(mol·K)" },
   { c:"transfo",  q:"Quelle est la caractéristique d'une courbe isobare ?", a:"p = constante" },
   { c:"transfo",  q:"Quelle est la caractéristique d'une courbe isochore ?", a:"V = constante" },
   { c:"transfo",  q:"Quelle est la caractéristique d'une isotherme ?", a:"T = constante" },
-  { c:"transfo",  q:"Quelle est la caractéristique d'une adiabatique réversible ?", a:"Q = 0 (S = constante)" },
+  { c:"transfo",  q:"Quelle est la caractéristique d'une adiabatique réversible ?", a:"Q = 0" },
   { c:"formules", q:"Quelle est la formule générale du travail élémentaire réversible ?", a:"W = − ∫ p dV" },
-  { c:"signes",   q:"Sur un diagramme p‑V, le volume augmente globalement de i à f : le travail est‑il positif, négatif ou nul ?", a:"Négatif (détente)" },
+  { c:"signes",   q:"Sur un diagramme p‑V, le volume augmente globalement de i à f : le travail est‑il positif, négatif ou nul ?", a:"Négatif (W < 0)" },
   { c:"cycles",   q:"Sur un diagramme p‑V, un cycle parcouru dans le sens horaire est‑il récepteur ou moteur ?", a:"Moteur" },
   { c:"formules", q:"Quelle est la formule générale du premier principe de la thermodynamique ?", a:"ΔU = W + Q" },
   { c:"formules", q:"Quelle est la formule du premier principe pour un cycle fermé ?", a:"W + Q = 0" },
   { c:"unites",   q:"Quelle est l'unité d'une chaleur spécifique molaire ?", a:"J/(mol·K)" },
-  { c:"transfo",  q:"Pour quel type de transformation puis‑je utiliser TV^(γ−1) = cste, pV^γ = cste et TP^((1−γ)/γ) = cste ?", a:"Adiabatique réversible" },
-  { c:"transfo",  q:"Dans un diagramme p‑V, quelle est la forme d'une isochore, d'une isobare, d'une isotherme et d'une adiabatique passant par un même point ?", a:"Isochore = verticale, isobare = horizontale, isotherme et adiabatique = hyperboles (adiabatique plus pentue)" },
+  { c:"transfo",  q:"Pour quel type de transformation puis‑je utiliser T·V^(γ−1) = const, p·V^γ = const et T^γ·V^(1−γ) = const ?", a:"Adiabatique réversible" },
+  { c:"transfo", d:"courbes", q:"Dans un diagramme p‑V, quelle est la forme d'une isochore, d'une isobare, d'une isotherme et d'une adiabatique passant par un même point ?", a:"Isochore = verticale, isobare = horizontale, isotherme et adiabatique = hyperboles (adiabatique plus pentue)" },
   { c:"signes",   q:"Machine MOTRICE : quels sont les signes de Q₁ (source chaude), Q₂ (source froide) et W (total) ?", a:"Q₁ > 0, Q₂ < 0, W < 0" },
   { c:"formules", q:"Quelle est la formule générale du rendement d'un cycle moteur ?", a:"η = |W| / Q₁" },
-  { c:"cycles",   q:"Quelle information nous donne le rendement de Carnot d'un cycle ?", a:"Le rendement maximal théorique entre deux sources" },
+  { c:"cycles",   q:"Quelle information nous donne le rendement de Carnot d'un cycle ?", a:"Le rendement maximal théorique du cycle" },
   { c:"transfo",  q:"Quel type de transformation est utilisé pour un compresseur dans un cycle ?", a:"Adiabatique réversible" },
   { c:"transfo",  q:"Quel type de transformation est utilisé pour une turbine dans un cycle ?", a:"Adiabatique réversible" },
   { c:"transfo",  q:"Quel type de transformation est utilisé pour un échangeur dans un cycle ?", a:"Isobare" },
   { c:"cycles", d:"otto",   q:"Quelles sont les 5 étapes (et leurs transformations) d'un cycle moteur ESSENCE 4 temps ?", a:"Admission (isobare) → compression (adiabatique) → explosion (isochore) → détente (adiabatique) → échappement (isochore)" },
   { c:"cycles", d:"diesel", q:"Quelles sont les 5 étapes (et leurs transformations) d'un cycle moteur DIESEL 4 temps ?", a:"Admission (isobare) → compression (adiabatique) → combustion (isobare) → détente (adiabatique) → échappement (isochore)" },
-  { c:"cycles",   q:"Comment appelle‑t‑on le volume dans le cylindre quand le piston est le plus haut ?", a:"Point mort haut (PMH)" },
-  { c:"cycles",   q:"Comment appelle‑t‑on le volume dans le cylindre quand le piston est le plus bas ?", a:"Point mort bas (PMB)" },
+  { c:"cycles",   q:"Comment appelle‑t‑on le volume MAXIMAL dans le cylindre d'un moteur à explosion ?", a:"Volume du point mort bas (PMB)" },
+  { c:"cycles",   q:"Comment appelle‑t‑on le volume MINIMAL dans le cylindre d'un moteur à explosion ?", a:"Volume du point mort haut (PMH)" },
   { c:"formules", q:"Quelle est la formule générale de combustion d'un hydrocarbure ?", a:"CxHy + (x + y/4) O₂ → x CO₂ + (y/2) H₂O" },
   { c:"cycles", d:"frigo",  q:"Quels sont les éléments constituant une machine frigorifique / PAC, dans l'ordre ?", a:"Évaporateur → compresseur → condenseur → détendeur" }
 ];
@@ -42,6 +42,22 @@ const QUESTIONS = [
 // Schémas à savoir refaire à l'examen, affichés avec la correction.
 // Repères : V_PmH = point mort haut (volume mini, à gauche), V_PmB = point mort bas (à droite).
 const DIAGRAMS = {
+
+  courbes: `<svg viewBox="0 0 360 225" role="img" aria-label="Les quatre courbes par un même point">
+    <path class="ax" d="M45 20 L45 196 L205 196"/>
+    <text class="lb" x="34" y="26">p</text><text class="lb" x="211" y="200">V</text>
+    <path class="c1" d="M110 30 L110 190"/>
+    <path class="c2" d="M52 110 L198 110"/>
+    <path class="c3" d="M60 40 C84 92 92 104 110 110 C140 120 168 138 196 150"/>
+    <path class="c4" d="M76 30 C96 84 102 100 110 110 C128 132 152 158 180 178"/>
+    <circle class="pt" cx="110" cy="110" r="3.5"/>
+    <text class="lb" x="52" y="154">même point</text>
+    <path class="c1" d="M218 56 L246 56"/><text class="nm" x="254" y="60">isochore</text>
+    <path class="c2" d="M218 86 L246 86"/><text class="nm" x="254" y="90">isobare</text>
+    <path class="c3" d="M218 116 L246 116"/><text class="nm" x="254" y="120">isotherme</text>
+    <path class="c4" d="M218 146 L246 146"/><text class="nm" x="254" y="150">adiabatique</text>
+    <text class="lb" x="45" y="219">l'adiabatique est plus pentue que l'isotherme (γ &gt; 1)</text>
+  </svg>`,
 
   otto: `<svg viewBox="0 0 360 230" role="img" aria-label="Diagramme p-V du cycle essence">
     <defs><marker id="aOtto" markerWidth="7" markerHeight="7" refX="5" refY="3"
@@ -51,7 +67,9 @@ const DIAGRAMS = {
     <path class="gd" d="M110 190 L110 30 M255 190 L255 30"/>
     <text class="lb" x="110" y="207" text-anchor="middle">V_PmH</text>
     <text class="lb" x="255" y="207" text-anchor="middle">V_PmB</text>
-    <path class="cv" d="M110 170 L255 170" marker-end="url(#aOtto)"/>
+    <path class="cv" d="M110 170 L255 170"/>
+    <path class="cv" d="M110 170 L186 170" marker-end="url(#aOtto)"/>
+    <path class="cv" d="M255 170 L200 170" marker-end="url(#aOtto)"/>
     <path class="cv" d="M255 170 Q180 158 110 112" marker-end="url(#aOtto)"/>
     <path class="cv" d="M110 112 L110 45"  marker-end="url(#aOtto)"/>
     <path class="cv" d="M110 45 Q185 105 255 128" marker-end="url(#aOtto)"/>
@@ -77,7 +95,9 @@ const DIAGRAMS = {
     <path class="gd" d="M110 190 L110 30 M255 190 L255 30"/>
     <text class="lb" x="110" y="207" text-anchor="middle">V_PmH</text>
     <text class="lb" x="255" y="207" text-anchor="middle">V_PmB</text>
-    <path class="cv" d="M110 170 L255 170" marker-end="url(#aDies)"/>
+    <path class="cv" d="M110 170 L255 170"/>
+    <path class="cv" d="M110 170 L186 170" marker-end="url(#aDies)"/>
+    <path class="cv" d="M255 170 L200 170" marker-end="url(#aDies)"/>
     <path class="cv" d="M255 170 Q180 155 110 60" marker-end="url(#aDies)"/>
     <path class="cv" d="M110 60 L168 60" marker-end="url(#aDies)"/>
     <path class="cv" d="M168 60 Q215 108 255 130" marker-end="url(#aDies)"/>
@@ -139,7 +159,7 @@ const DECOYS = {
     "Q₁ > 0, Q₂ < 0, W > 0", "Q₁ < 0, Q₂ > 0, W < 0"
   ],
   formules: [
-    "ΔU = W − Q", "ΔU = Q − W", "ΔU = m c ΔT", "pV = mRT", "pV^γ = nRT",
+    "ΔU = W − Q", "ΔU = Q − W", "pV = nRT/m", "pV = R T", "ΔU = m c ΔT", "pV = mRT", "pV^γ = nRT",
     "W = + ∫ p dV", "W = p ΔV", "W − Q = 0", "H = U + pV", "ΔS = Q / T",
     "η = Q₁ / |W|", "η = |W| / Q₂", "η = 1 − T₁/T₂", "η = (Q₁ + Q₂) / |W|",
     "CxHy + x O₂ → x CO₂ + y H₂O",
@@ -150,15 +170,15 @@ const DECOYS = {
     "p = constante", "V = constante", "T = constante", "Q = 0", "S = constante",
     "Isobare", "Isochore", "Isotherme", "Isotherme réversible", "Isenthalpique",
     "Polytropique", "Adiabatique irréversible", "Isobare réversible",
-    "Q = 0 (S augmente)", "T = constante (pV^γ = cste)", "p = constante (V/T = cste)",
+    "Q = 0 et S augmente", "Q = 0 et W = 0", "T = constante (pV^γ = cste)", "p = constante (V/T = cste)",
     "Isochore = horizontale, isobare = verticale, isotherme et adiabatique = droites obliques",
     "Isochore = verticale, isobare = horizontale, isotherme et adiabatique = hyperboles (isotherme plus pentue)",
     "Isochore et isobare = hyperboles, isotherme = verticale, adiabatique = horizontale"
   ],
   cycles: [
     "Moteur", "Récepteur", "Ni l'un ni l'autre : W_tot = 0",
-    "Point mort haut (PMH)", "Point mort bas (PMB)", "Point mort milieu (PMM)",
-    "Cylindrée maximale", "Volume mort",
+    "Volume du point mort haut (PMH)", "Volume du point mort bas (PMB)",
+    "Volume du point mort milieu (PMM)", "Volume de la cylindrée", "Volume mort",
     "Le rendement réel mesuré de la machine",
     "Le rendement minimal à atteindre pour être rentable",
     "Le rendement moyen des machines réelles",

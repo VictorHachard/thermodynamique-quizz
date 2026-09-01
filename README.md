@@ -8,9 +8,11 @@ préliminaires du cours de mécanique et thermodynamique.
 - L'ordre des questions **et** celui des propositions changent à chaque partie.
 - **Fiche de révision** : les 34 questions/réponses sur une seule page, réponses masquables.
 - Réponses réduites au minimum : ce qu il faut ecrire, rien de plus.
-- Schemas p-V (essence, diesel) et schema de la machine frigo affiches avec la correction.
+- Schemas affiches avec la correction : les 4 courbes du diagramme p-V (q22), les cycles essence et diesel (q29, q30), la machine frigo (q34).
 - Écran de résultat avec la liste des questions ratées et la bonne réponse.
 - Bouton « refaire seulement les ratées ».
+
+Les enonces et les reponses suivent le questionnaire corrige (questionnaire.docx).
 
 Les questions sont dans [`questions.js`](questions.js).
 
