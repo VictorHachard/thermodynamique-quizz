@@ -45,6 +45,13 @@ def nb(a, b, c, e):
         k = k + 1
     return k
 
+def kel(v):
+    if v is None:
+        return None
+    if uc == "1":
+        return v + 273.15
+    return v
+
 def f(s):
     print("  " + s)
 
@@ -70,6 +77,17 @@ p("Cv J/molK", cv)
 f("Cp = g.Cv")
 p("Cp J/molK", cp)
 
+print("temperatures en :")
+uc = input("1=C 2=K : ")
+if uc == "2":
+    u = "K"
+else:
+    uc = "1"
+    u = "C"
+print("-> tout en " + u)
+f("K = C + 273.15")
+f("C = K - 273.15")
+
 print("")
 print("--- ETAT 1 ---")
 print("une seule case vide")
@@ -77,7 +95,7 @@ print("sur les quatre")
 while True:
     p1 = q("pression p1 bar", "p1= ")
     v1 = q("volume V1 L", "V1= ")
-    t1 = q("temperature T1 C", "T1= ")
+    t1 = q("temperature T1 " + u, "T1= ")
     nn = q("nombre de moles n", "n= ")
     if nb(p1, v1, t1, nn) <= 1:
         break
@@ -88,8 +106,7 @@ if p1 is not None:
     p1 = p1 * 100000
 if v1 is not None:
     v1 = v1 / 1000.0
-if t1 is not None:
-    t1 = t1 + 273.15
+t1 = kel(t1)
 
 f("SI : Pa, m3, K")
 f("pV = nRT")
@@ -139,7 +156,7 @@ else:
 while True:
     p2 = q("pression p2 bar", "p2= ")
     v2 = q("volume V2 L", "V2= ")
-    t2 = q("temperature T2 C", "T2= ")
+    t2 = q("temperature T2 " + u, "T2= ")
     if ty == "1":
         ok = v2 is not None or t2 is not None
     elif ty == "2":
@@ -156,8 +173,7 @@ if p2 is not None:
     p2 = p2 * 100000
 if v2 is not None:
     v2 = v2 / 1000.0
-if t2 is not None:
-    t2 = t2 + 273.15
+t2 = kel(t2)
 
 if ty == "1":
     p2 = p1

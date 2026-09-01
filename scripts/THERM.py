@@ -56,11 +56,22 @@ if c == "1":
     print("--- Q = m.c.dT ---")
     print("sans changement")
     print("d etat")
+    print("temperatures en :")
+    uc = input("1=C 2=K : ")
+    if uc == "2":
+        u = "K"
+    else:
+        uc = "1"
+        u = "C"
+    print("-> tout en " + u)
+    f("K = C + 273.15")
+    f("C = K - 273.15")
     m = qr("masse m kg", "m= ")
     ce = qr("capacite c J/kgK", "c= ")
-    t1 = qr("T initiale en C", "Ti= ")
-    t2 = qr("T finale en C", "Tf= ")
+    t1 = qr("T initiale en " + u, "Ti= ")
+    t2 = qr("T finale en " + u, "Tf= ")
     f("dT = Tf - Ti")
+    f("dT identique C ou K")
     p("dT C", t2 - t1)
     f("Q = m.c.dT")
     qc = m * ce * (t2 - t1)
@@ -89,12 +100,22 @@ elif c == "3":
     print("--- MELANGE ---")
     print("temperature finale")
     print("Q1 + Q2 = 0")
+    print("temperatures en :")
+    uc = input("1=C 2=K : ")
+    if uc == "2":
+        u = "K"
+    else:
+        uc = "1"
+        u = "C"
+    print("-> tout en " + u)
+    f("K = C + 273.15")
+    f("C = K - 273.15")
     m1 = qr("masse 1 kg", "m1= ")
     c1 = qr("capacite 1 J/kgK", "c1= ")
-    t1 = qr("temperature 1 C", "T1= ")
+    t1 = qr("temperature 1 " + u, "T1= ")
     m2 = qr("masse 2 kg", "m2= ")
     c2 = qr("capacite 2 J/kgK", "c2= ")
-    t2 = qr("temperature 2 C", "T2= ")
+    t2 = qr("temperature 2 " + u, "T2= ")
     den = m1 * c1 + m2 * c2
     if den == 0:
         print("m1c1+m2c2 = 0 :")
@@ -103,7 +124,7 @@ elif c == "3":
         f("Tf = m1c1T1+m2c2T2")
         f("     /(m1c1+m2c2)")
         tf = (m1 * c1 * t1 + m2 * c2 * t2) / den
-        p("Tf C", tf)
+        p("Tf " + u, tf)
         f("Q1 = m1.c1.(Tf-T1)")
         p("Q1 J", m1 * c1 * (tf - t1))
         f("Q2 = m2.c2.(Tf-T2)")
@@ -127,7 +148,7 @@ else:
         print("il faut P ou mdot")
     ce = qr("capacite c J/kgK", "c= ")
     if pu is None or md is None:
-        dt = qr("ecart dT en C", "dT= ")
+        dt = qr("ecart dT (C ou K)", "dT= ")
     else:
         dt = None
     if pu is None:

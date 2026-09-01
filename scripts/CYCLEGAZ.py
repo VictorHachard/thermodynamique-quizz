@@ -40,6 +40,13 @@ def ch(t, n):
             return s
         print("reponds 1 a " + str(n))
 
+def kel(v):
+    if v is None:
+        return None
+    if uc == "1":
+        return v + 273.15
+    return v
+
 def f(s):
     print("  " + s)
 
@@ -50,6 +57,18 @@ print("=== CYCLE GAZ ===")
 print("machines ouvertes")
 print("enchainees")
 print("tout par kg, avec cp")
+
+print("")
+print("temperatures en :")
+uc = input("1=C 2=K : ")
+if uc == "2":
+    u = "K"
+else:
+    uc = "1"
+    u = "C"
+print("-> tout en " + u)
+f("K = C + 273.15")
+f("C = K - 273.15")
 
 print("")
 print("--- DONNEES GAZ ---")
@@ -63,7 +82,7 @@ if g is None:
 md = q("debit kg/s", "debit= ")
 if md is None:
     md = 0.0
-t = qr("T depart T1 en C", "T1= ") + 273.15
+t = kel(qr("T depart T1 en " + u, "T1= "))
 pr = qr("p depart p1 (bar)", "p1= ")
 
 wt = 0.0
@@ -105,7 +124,7 @@ while True:
         p("w J/kg", w)
     else:
         print("isobare : p2 = p1")
-        t2 = qr("T finale en C", "Tfin= ") + 273.15
+        t2 = kel(qr("T finale en " + u, "Tfin= "))
         p2 = pr
         f("q = cp.(T2-T1)")
         qe = cp * (t2 - t)

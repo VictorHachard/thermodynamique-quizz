@@ -38,6 +38,13 @@ def ch(t, n):
             return s
         print("reponds 1 a " + str(n))
 
+def kel(v):
+    if v is None:
+        return None
+    if uc == "1":
+        return v + 273.15
+    return v
+
 def f(s):
     print("  " + s)
 
@@ -97,11 +104,21 @@ else:
 print("")
 print("--- CARNOT ---")
 print("bornes theoriques")
-tf = q("T froide en C", "Tfroid= ")
+print("temperatures en :")
+uc = input("1=C 2=K : ")
+if uc == "2":
+    u = "K"
+else:
+    uc = "1"
+    u = "C"
+print("-> tout en " + u)
+f("K = C + 273.15")
+f("C = K - 273.15")
+tf = q("T froide en " + u, "Tfroid= ")
 if tf is not None:
-    tc = qr("T chaude en C", "Tchaud= ")
-    t2 = tf + 273.15
-    t1 = tc + 273.15
+    tc = qr("T chaude en " + u, "Tchaud= ")
+    t2 = kel(tf)
+    t1 = kel(tc)
     f("T en KELVIN")
     if t1 != t2:
         f("PSNmax = T2/(T1-T2)")

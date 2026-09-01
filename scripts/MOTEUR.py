@@ -40,6 +40,13 @@ def go(t):
     s = input("1=oui vide=non : ")
     return s == "1"
 
+def kel(v):
+    if v is None:
+        return None
+    if uc == "1":
+        return v + 273.15
+    return v
+
 def f(s):
     print("  " + s)
 
@@ -68,6 +75,18 @@ else:
     print("-> 4 temps")
 
 print("")
+print("temperatures en :")
+uc = input("1=C 2=K : ")
+if uc == "2":
+    u = "K"
+else:
+    uc = "1"
+    u = "C"
+print("-> tout en " + u)
+f("K = C + 273.15")
+f("C = K - 273.15")
+
+print("")
 print("--- GEOMETRIE ---")
 ep = qr("taux de compression", "eps= ")
 print("gamma Cp/Cv")
@@ -76,7 +95,7 @@ g = d("gamma= ")
 if g is None:
     g = 1.4
     print("gamma pris = 1.4")
-tb = qr("T admission en C", "Tadm= ") + 273.15
+tb = kel(qr("T admission en " + u, "Tadm= "))
 pb = qr("p admission en bar", "padm= ") * 100000
 print("cylindree TOTALE L")
 print("cm3/1000 = L")

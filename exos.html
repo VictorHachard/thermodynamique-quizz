@@ -140,6 +140,11 @@
     <p class="sub" style="margin:12px 0 0">Clique un nom pour voir le code, ou prends
       <a href="scripts.zip" download>les 7 d'un coup en .zip</a> puis copie les <code>.py</code> dans
       la mémoire de la Casio (menu Python → sélectionner → EXE).</p>
+    <div class="note" style="margin-top:14px"><b>Températures : °C ou K, tu choisis</b>
+      Tout script qui demande une température commence par <code>1=C 2=K :</code>. Toutes les
+      valeurs de cette page sont en <b>°C</b> : tape <code>1</code>, ou EXE tout court, c'est le
+      défaut. Si l'énoncé te donne des kelvins, tape <code>2</code> et entre-les tels quels, sans
+      rien convertir. Le script rappelle <code>K = C + 273.15</code> juste après.</div>
   </div>
 
   <!-- ============ A ============ -->
@@ -157,6 +162,7 @@
       <div class="lbl">Ce que tu tapes — 1 seul passage</div>
       <table class="io">
         <tr><td>gamma=</td><td>1.4</td></tr>
+        <tr><td>1=C 2=K :</td><td>1 <span class="skip">ou EXE, °C par défaut</span></td></tr>
         <tr><td>p1=</td><td>1</td></tr>
         <tr><td>V1=</td><td class="skip">EXE — c'est l'inconnue</td></tr>
         <tr><td>T1=</td><td>20</td></tr>
@@ -198,19 +204,19 @@
         1800 K → <code>1526.85</code>, 600 K → <code>326.85</code>.</p>
       <table class="io">
         <tr><td class="step" colspan="2">Passage 1 — A→B, isochore</td></tr>
-        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 1 / EXE / 26.85 / 1</td></tr>
+        <tr><td>gamma= / 1=C 2=K : / p1= / V1= / T1= / n=</td><td>1.4 / 1 / 1 / EXE / 26.85 / 1</td></tr>
         <tr><td>1, 2, 3 ou 4 :</td><td>2 <span class="skip">(isochore)</span></td></tr>
         <tr><td>p2= / V2= / T2=</td><td>3 / EXE / EXE</td></tr>
         <tr><td class="step" colspan="2">Passage 2 — B→C, isobare</td></tr>
-        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 3 / EXE / 626.85 / 1</td></tr>
+        <tr><td>gamma= / 1=C 2=K : / p1= / V1= / T1= / n=</td><td>1.4 / 1 / 3 / EXE / 626.85 / 1</td></tr>
         <tr><td>1, 2, 3 ou 4 :</td><td>1 <span class="skip">(isobare)</span></td></tr>
         <tr><td>p2= / V2= / T2=</td><td>EXE / 49.886 <span class="skip">(= 2 × 24,942)</span> / EXE</td></tr>
         <tr><td class="step" colspan="2">Passage 3 — C→D, isochore</td></tr>
-        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 3 / EXE / 1526.85 / 1</td></tr>
+        <tr><td>gamma= / 1=C 2=K : / p1= / V1= / T1= / n=</td><td>1.4 / 1 / 3 / EXE / 1526.85 / 1</td></tr>
         <tr><td>1, 2, 3 ou 4 :</td><td>2</td></tr>
         <tr><td>p2= / V2= / T2=</td><td>1 / EXE / EXE</td></tr>
         <tr><td class="step" colspan="2">Passage 4 — D→A, isobare</td></tr>
-        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 1 / EXE / 326.85 / 1</td></tr>
+        <tr><td>gamma= / 1=C 2=K : / p1= / V1= / T1= / n=</td><td>1.4 / 1 / 1 / EXE / 326.85 / 1</td></tr>
         <tr><td>1, 2, 3 ou 4 :</td><td>1</td></tr>
         <tr><td>p2= / V2= / T2=</td><td>EXE / 24.943 / EXE</td></tr>
       </table>
@@ -251,11 +257,11 @@
       <div class="lbl">Ce que tu tapes</div>
       <table class="io">
         <tr><td class="step" colspan="2">Pour b) — isotherme B→C</td></tr>
-        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / EXE / 10 / 226.85 / 1</td></tr>
+        <tr><td>gamma= / 1=C 2=K : / p1= / V1= / T1= / n=</td><td>1.4 / 1 / EXE / 10 / 226.85 / 1</td></tr>
         <tr><td>1, 2, 3 ou 4 :</td><td>3 <span class="skip">(isotherme)</span></td></tr>
         <tr><td>p2= / V2= / T2=</td><td>EXE / 30 / EXE</td></tr>
         <tr><td class="step" colspan="2">Pour e) — adiabatique B→A, puis C→D</td></tr>
-        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / EXE / <b>10</b> / 226.85 / 1
+        <tr><td>gamma= / 1=C 2=K : / p1= / V1= / T1= / n=</td><td>1.4 / 1 / EXE / <b>10</b> / 226.85 / 1
           &nbsp;<span class="skip">puis <b>30</b> au 2ᵉ passage</span></td></tr>
         <tr><td>1, 2, 3 ou 4 :</td><td>4 <span class="skip">(adiabatique)</span></td></tr>
         <tr><td>p2= / V2= / T2=</td><td>EXE / EXE / 26.85 <span class="skip">(= 300 K)</span></td></tr>
@@ -301,6 +307,7 @@
       <table class="io">
         <tr><td>1=ess 2=die :</td><td>1</td></tr>
         <tr><td>1=4T 2=2T :</td><td>1</td></tr>
+        <tr><td>1=C 2=K :</td><td>1 <span class="skip">ou EXE, °C par défaut</span></td></tr>
         <tr><td>eps=</td><td>9</td></tr>
         <tr><td>gamma=</td><td>1.4</td></tr>
         <tr><td>Tadm=</td><td>25</td></tr>
@@ -424,6 +431,7 @@
         <tr><td>h1=</td><td>396</td></tr>
         <tr><td>h3=</td><td>252</td></tr>
         <tr><td>h2=</td><td>430 <span class="skip">compresseur idéal ici</span></td></tr>
+        <tr><td>1=C 2=K :</td><td>1 <span class="skip">ou EXE, °C par défaut</span></td></tr>
         <tr><td>Tfroid=</td><td class="skip">EXE — pas de températures données</td></tr>
         <tr><td>Putile=</td><td>8</td></tr>
         <tr><td>1=frigo 2=pac :</td><td>1</td></tr>
@@ -466,6 +474,7 @@
         <tr><td>h2=</td><td class="skip">EXE — le compresseur n'est pas idéal</td></tr>
         <tr><td>h2s=</td><td>433</td></tr>
         <tr><td>eis=</td><td>0.72</td></tr>
+        <tr><td>1=C 2=K :</td><td>1 <span class="skip">ou EXE, °C par défaut</span></td></tr>
         <tr><td>Tfroid=</td><td>-10</td></tr>
         <tr><td>Tchaud=</td><td>42</td></tr>
         <tr><td>Putile=</td><td class="skip">EXE</td></tr>
@@ -504,6 +513,7 @@
       <table class="io">
         <tr><td>h1= / h3= / h2=</td><td>399 / 260 / EXE</td></tr>
         <tr><td>h2s= / eis=</td><td>433 / 0.72</td></tr>
+        <tr><td>1=C 2=K :</td><td>1 <span class="skip">ou EXE, °C par défaut</span></td></tr>
         <tr><td>Tfroid=</td><td class="skip">EXE — plus besoin de Carnot ici</td></tr>
         <tr><td>Putile=</td><td>15</td></tr>
         <tr><td>1=frigo 2=pac :</td><td>2</td></tr>
@@ -548,6 +558,7 @@
 
       <div class="lbl">Ce que tu tapes — un seul lancement, tu enchaînes les organes</div>
       <table class="io">
+        <tr><td>1=C 2=K :</td><td>1 <span class="skip">ou EXE, °C par défaut</span></td></tr>
         <tr><td>cp= / gamma= / debit=</td><td>1004 / 1.4 / 35</td></tr>
         <tr><td>T1= / p1=</td><td>15 / 1</td></tr>
         <tr><td class="step" colspan="2">1‑2 compresseur</td></tr>
@@ -600,7 +611,7 @@
 
       <div class="lbl">Ce que tu tapes</div>
       <table class="io">
-        <tr><td>1=ess 2=die : / 1=4T 2=2T :</td><td>1 / 1</td></tr>
+        <tr><td>1=ess 2=die : / 1=4T 2=2T : / 1=C 2=K :</td><td>1 / 1 / 1</td></tr>
         <tr><td>eps= / gamma=</td><td>10 / 1.4</td></tr>
         <tr><td>Tadm= / padm=</td><td>16 / 1</td></tr>
         <tr><td>cyl= / nbcyl=</td><td>1.2 / 4</td></tr>
@@ -752,19 +763,19 @@
         464,297 K → <code>191.147</code>, 928,594 K → <code>655.444</code>.</p>
       <table class="io">
         <tr><td class="step" colspan="2">A→B, adiabatique</td></tr>
-        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 2 / EXE / 20 / 34.602</td></tr>
+        <tr><td>gamma= / 1=C 2=K : / p1= / V1= / T1= / n=</td><td>1.4 / 1 / 2 / EXE / 20 / 34.602</td></tr>
         <tr><td>1, 2, 3 ou 4 :</td><td>4</td></tr>
         <tr><td>p2= / V2= / T2=</td><td>10 / EXE / EXE</td></tr>
         <tr><td class="step" colspan="2">B→C, isotherme</td></tr>
-        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 10 / EXE / 191.147 / 34.602</td></tr>
+        <tr><td>gamma= / 1=C 2=K : / p1= / V1= / T1= / n=</td><td>1.4 / 1 / 10 / EXE / 191.147 / 34.602</td></tr>
         <tr><td>1, 2, 3 ou 4 :</td><td>3</td></tr>
         <tr><td>p2= / V2= / T2=</td><td>1 / EXE / EXE</td></tr>
         <tr><td class="step" colspan="2">C→D, isochore</td></tr>
-        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 1 / EXE / 191.147 / 34.602</td></tr>
+        <tr><td>gamma= / 1=C 2=K : / p1= / V1= / T1= / n=</td><td>1.4 / 1 / 1 / EXE / 191.147 / 34.602</td></tr>
         <tr><td>1, 2, 3 ou 4 :</td><td>2</td></tr>
         <tr><td>p2= / V2= / T2=</td><td>2 / EXE / EXE</td></tr>
         <tr><td class="step" colspan="2">D→A, isobare</td></tr>
-        <tr><td>gamma= / p1= / V1= / T1= / n=</td><td>1.4 / 2 / EXE / 655.444 / 34.602</td></tr>
+        <tr><td>gamma= / 1=C 2=K : / p1= / V1= / T1= / n=</td><td>1.4 / 1 / 2 / EXE / 655.444 / 34.602</td></tr>
         <tr><td>1, 2, 3 ou 4 :</td><td>1</td></tr>
         <tr><td>p2= / V2= / T2=</td><td>EXE / 421.668 / EXE</td></tr>
       </table>
