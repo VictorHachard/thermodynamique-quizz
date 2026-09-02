@@ -33,8 +33,8 @@ const QUESTIONS = [
   { c:"transfo",  q:"Quel type de transformation est utilisé pour un compresseur dans un cycle ?", a:"Adiabatique réversible" },
   { c:"transfo",  q:"Quel type de transformation est utilisé pour une turbine dans un cycle ?", a:"Adiabatique réversible" },
   { c:"transfo",  q:"Quel type de transformation est utilisé pour un échangeur dans un cycle ?", a:"Isobare" },
-  { c:"cycles", d:"otto",   q:"Quelles sont les 5 étapes (et leurs transformations) d'un cycle moteur ESSENCE 4 temps ?", a:"Admission (isobare) → compression (adiabatique) → explosion (isochore) → détente (adiabatique) → échappement (isochore)" },
-  { c:"cycles", d:"diesel", q:"Quelles sont les 5 étapes (et leurs transformations) d'un cycle moteur DIESEL 4 temps ?", a:"Admission (isobare) → compression (adiabatique) → combustion (isobare) → détente (adiabatique) → échappement (isochore)" },
+  { c:"cycles", d:"otto",   q:"Quelles sont les 5 étapes d'un cycle moteur ESSENCE 4 temps ?", a:"Admission → compression → explosion → détente → échappement" },
+  { c:"cycles", d:"diesel", q:"Quelles sont les 5 étapes d'un cycle moteur DIESEL 4 temps ?", a:"Admission → compression → combustion → détente → échappement" },
   { c:"cycles",   q:"Comment appelle‑t‑on le volume MAXIMAL dans le cylindre d'un moteur à explosion ?", a:"Volume du point mort bas (PMB)" },
   { c:"cycles",   q:"Comment appelle‑t‑on le volume MINIMAL dans le cylindre d'un moteur à explosion ?", a:"Volume du point mort haut (PMH)" },
   { c:"formules", q:"Quelle est la formule générale de combustion d'un hydrocarbure ?", a:"CxHy + (x + y/4) O₂ → x CO₂ + (y/2) H₂O" },
@@ -162,7 +162,7 @@ const DIAGRAMS = {
     <text class="st" x="139" y="50"  text-anchor="middle">3</text>
     <text class="st" x="218" y="86"  text-anchor="middle">4</text>
     <text class="st" x="264" y="153">5</text>
-    <text class="lb" x="45" y="224">3 = ISOBARE (c'est là que le diesel diffère de l'essence)</text>
+    <text class="lb" x="45" y="224">3 = c'est là que le diesel diffère de l'essence</text>
   </svg>`,
 
   frigo: `<svg viewBox="0 0 430 252" role="img" aria-label="Schema d'une machine frigorifique">
@@ -252,10 +252,11 @@ const DECOYS = {
     "Le rendement minimal à atteindre pour être rentable",
     "Le rendement moyen des machines réelles",
     "La chaleur perdue à la source froide",
-    "Admission (isochore) → compression (isotherme) → explosion (isobare) → détente (isotherme) → échappement (isobare)",
-    "Admission (isobare) → compression (adiabatique) → combustion (isochore) → détente (adiabatique) → échappement (isobare)",
-    "Admission (adiabatique) → compression (isobare) → explosion (isochore) → détente (isobare) → échappement (adiabatique)",
-    "Admission (isobare) → compression (isotherme) → combustion (isobare) → détente (isotherme) → échappement (isochore)",
+    "Admission → compression → explosion → échappement → détente",
+    "Admission → explosion → compression → détente → échappement",
+    "Admission → compression → détente → explosion → échappement",
+    "Compression → admission → combustion → détente → échappement",
+    "Admission → compression → combustion → échappement → détente",
     "Évaporateur → détendeur → condenseur → compresseur",
     "Compresseur → évaporateur → détendeur → condenseur",
     "Condenseur → compresseur → évaporateur → détendeur",
