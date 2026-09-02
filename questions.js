@@ -11,7 +11,7 @@ const QUESTIONS = [
   { c:"unites",   q:"Quel est le lien entre 1 Joule et 1 Watt ?", a:"1 W = 1 J/s" },
   { c:"signes",   q:"Quel est le signe d'une énergie entrant dans le système ?", a:"Positif" },
   { c:"signes",   q:"Quel est le signe d'une énergie sortant du système ?", a:"Négatif" },
-  { c:"formules", q:"Donnez la formule de la loi des gaz parfaits.", a:"pV = mRT (ou nRT)" },
+  { c:"formules", q:"Donnez la formule de la loi des gaz parfaits.", a:"pV = nRT" },
   { c:"unites",   q:"Que vaut R, la constante des gaz parfaits (valeur et unité) ?", a:"R = 8,314 J/(mol·K)" },
   { c:"transfo",  q:"Quelle est la caractéristique d'une courbe isobare ?", a:"p = constante" },
   { c:"transfo",  q:"Quelle est la caractéristique d'une courbe isochore ?", a:"V = constante" },
@@ -20,6 +20,8 @@ const QUESTIONS = [
   { c:"formules", q:"Quelle est la formule générale du travail élémentaire réversible ?", a:"W = − ∫ p dV" },
   { c:"signes", dq:"pvDetente", o:["Positif","Négatif","Nul"], q:"Sur ce diagramme p‑V, le gaz va de i à f. Quel est le signe du travail W reçu par le gaz ?", a:"Négatif" },
   { c:"signes", dq:"pvCompression", o:["Positif","Négatif","Nul"], q:"Même diagramme, flèche inversée : quel est le signe du travail W reçu par le gaz ?", a:"Positif" },
+  { c:"signes", dq:"pvDetenteDescendante", o:["Positif","Négatif","Nul"], q:"Sur ce diagramme p‑V la courbe descend de i (en haut à gauche) vers f (en bas à droite). Quel est le signe du travail W reçu par le gaz ?", a:"Négatif" },
+  { c:"signes", dq:"pvCompressionMontante", o:["Positif","Négatif","Nul"], q:"Même courbe, flèche inversée : on part de i en bas à droite pour finir en f en haut à gauche — quel est le signe du travail W reçu par le gaz ?", a:"Positif" },
   { c:"cycles", dq:"pvHoraire", o:["Moteur","Récepteur","Ni l'un ni l'autre"], q:"Sur ce diagramme p‑V, le cycle est parcouru dans le sens des flèches. Le cycle est‑il moteur ou récepteur ?", a:"Moteur" },
   { c:"cycles", dq:"pvAntiHoraire", o:["Moteur","Récepteur","Ni l'un ni l'autre"], q:"Même cycle, flèches inversées : le cycle est‑il moteur ou récepteur ?", a:"Récepteur" },
   { c:"formules", q:"Quelle est la formule générale du premier principe de la thermodynamique ?", a:"ΔU = W + Q" },
@@ -67,6 +69,32 @@ const DIAGRAMS = {
     <path class="cv" d="M255 58 C175 120 138 90 103 125" marker-end="url(#aCom)"/>
     <circle class="pt" cx="255" cy="58" r="4"/><text class="nm" x="266" y="54">i</text>
     <circle class="pt" cx="95" cy="130" r="4"/><text class="nm" x="85" y="126" text-anchor="end">f</text>
+    <text class="lb" x="255" y="180" text-anchor="middle">V_i</text>
+    <text class="lb" x="95" y="180" text-anchor="middle">V_f</text>
+  </svg>`,
+
+  pvDetenteDescendante: `<svg viewBox="0 0 360 200" role="img" aria-label="Diagramme p-V, courbe descendante de i en haut a gauche vers f en bas a droite">
+    <defs><marker id="aDetD" markerWidth="8" markerHeight="8" refX="6" refY="3.5"
+      orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="ar"/></marker></defs>
+    <path class="ax" d="M45 20 L45 165 L330 165"/>
+    <text class="lb" x="34" y="26">p</text><text class="lb" x="325" y="182">V</text>
+    <path class="gd" d="M95 50 L95 165 M255 145 L255 165"/>
+    <path class="cv" d="M95 50 C145 105 200 138 247 144" marker-end="url(#aDetD)"/>
+    <circle class="pt" cx="95" cy="50" r="4"/><text class="nm" x="85" y="46" text-anchor="end">i</text>
+    <circle class="pt" cx="255" cy="145" r="4"/><text class="nm" x="266" y="141">f</text>
+    <text class="lb" x="95" y="180" text-anchor="middle">V_i</text>
+    <text class="lb" x="255" y="180" text-anchor="middle">V_f</text>
+  </svg>`,
+
+  pvCompressionMontante: `<svg viewBox="0 0 360 200" role="img" aria-label="Diagramme p-V, meme courbe parcourue de f en bas a droite vers i en haut a gauche">
+    <defs><marker id="aComM" markerWidth="8" markerHeight="8" refX="6" refY="3.5"
+      orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="ar"/></marker></defs>
+    <path class="ax" d="M45 20 L45 165 L330 165"/>
+    <text class="lb" x="34" y="26">p</text><text class="lb" x="325" y="182">V</text>
+    <path class="gd" d="M95 50 L95 165 M255 145 L255 165"/>
+    <path class="cv" d="M255 145 C200 138 145 105 99 56" marker-end="url(#aComM)"/>
+    <circle class="pt" cx="255" cy="145" r="4"/><text class="nm" x="266" y="141">i</text>
+    <circle class="pt" cx="95" cy="50" r="4"/><text class="nm" x="85" y="46" text-anchor="end">f</text>
     <text class="lb" x="255" y="180" text-anchor="middle">V_i</text>
     <text class="lb" x="95" y="180" text-anchor="middle">V_f</text>
   </svg>`,
